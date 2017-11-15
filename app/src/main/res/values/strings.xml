@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GasGasStation</string>
+    <string name="app_name">주유주유소</string>
+    <string name="splash_subject">가까운 주유소는 어디서?</string>
 </resources>
