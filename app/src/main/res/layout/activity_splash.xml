@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffdc00"
-    android:backgroundTint="#ffdc00"
+    android:background="@color/colorAccent"
+    android:backgroundTint="@color/colorAccent"
     tools:context="com.gasgasstation.view.SplashActivity">
 
     <ImageView
