@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">주유주유소</string>
+    <string name="splash_text">가까운 주유소는 어디서?</string>
+</resources>

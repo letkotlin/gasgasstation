@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">주유주유소</string>
     <string name="splash_subject">가까운 주유소는 어디서?</string>
+    <string name="splash_text">가까운 주유소는 어디서?</string>
+    <string name="base_navi_desc">기본 네비게이션을 설정합니다</string>
+    <string name="base_oil_desc">기본 유종을 설정합니다</string>
+    <string name="btton_next"><![CDATA[다음 >]]></string>
 </resources>
