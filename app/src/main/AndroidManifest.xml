@@ -15,7 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="gasgasstation.view.InitialSettingActivity"></activity>
+        <activity
+            android:name=".view.InitialSettingActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".view.GasStationListActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

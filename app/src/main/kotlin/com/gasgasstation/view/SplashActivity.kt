@@ -3,14 +3,17 @@ package com.gasgasstation.view
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import com.gasgasstation.R
+import com.gasgasstation.base.BaseActivity
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
+
+    override fun getLayoutResId(): Int {
+        return R.layout.activity_splash
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
 
         // 일정 시간 후에 화면 전환
         Handler().postDelayed({
