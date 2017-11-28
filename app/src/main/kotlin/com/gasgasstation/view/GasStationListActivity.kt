@@ -5,6 +5,9 @@ import com.gasgasstation.R
 import com.gasgasstation.base.BaseActivity
 
 class GasStationListActivity : BaseActivity() {
+    override fun inject() {
+
+    }
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_gasstation_list

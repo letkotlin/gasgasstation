@@ -4,12 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.BaseActivity
+import com.gasgasstation.dagger.InitialSettingModule
 import kotlinx.android.synthetic.main.activity_initial_setting.*
 
 
 class InitialSettingActivity : BaseActivity() {
+
+    override fun inject() {
+        DaggerInitialSettingComponent.builder()
+                .appComponent(App.getAppComponent(this))
+                .initialSettingModule(InitialSettingModule(this))
+                .build().inject(this)
+    }
+
     override fun getLayoutResId(): Int {
         return R.layout.activity_initial_setting
     }

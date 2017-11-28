@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity
 abstract class BaseActivity : AppCompatActivity() {
     @LayoutRes abstract fun getLayoutResId(): Int
 
+    abstract fun inject(): Unit
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        inject()
         setContentView(getLayoutResId())
     }
 
