@@ -2,7 +2,7 @@ package com.gasgasstation.view
 
 import android.os.Bundle
 import com.gasgasstation.R
-import com.gasgasstation.base.BaseActivity
+import com.gasgasstation.base.view.BaseActivity
 
 class GasStationListActivity : BaseActivity() {
     override fun inject() {

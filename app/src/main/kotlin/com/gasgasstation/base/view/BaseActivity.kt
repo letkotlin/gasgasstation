@@ -1,4 +1,4 @@
-package com.gasgasstation.base
+package com.gasgasstation.base.view
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes

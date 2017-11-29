@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.gasgasstation.R
-import com.gasgasstation.base.BaseActivity
+import com.gasgasstation.base.view.BaseActivity
 
 class SplashActivity : BaseActivity() {
+    override fun inject() {
+
+    }
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_splash
@@ -23,4 +26,5 @@ class SplashActivity : BaseActivity() {
         }, 3000)
 
     }
+
 }

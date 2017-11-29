@@ -2,10 +2,7 @@ package com.gasgasstation
 
 import android.app.Application
 import android.content.Context
-import com.gasgasstation.dagger.AppComponent
-import com.gasgasstation.dagger.DaggerAppComponent
-import com.gasgasstation.dagger.NetworkModule
-import com.gasgasstation.dagger.PreferenceModule
+import com.gasgasstation.dagger.*
 
 /**
  * Created by kws on 2017. 11. 22..

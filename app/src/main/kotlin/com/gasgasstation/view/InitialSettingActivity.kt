@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.gasgasstation.App
 import com.gasgasstation.R
-import com.gasgasstation.base.BaseActivity
+import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.dagger.InitialSettingModule
 import kotlinx.android.synthetic.main.activity_initial_setting.*
 

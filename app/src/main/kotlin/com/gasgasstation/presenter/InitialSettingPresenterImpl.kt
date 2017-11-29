@@ -5,4 +5,5 @@ package com.gasgasstation.presenter
  */
 interface InitialSettingPresenterImpl : InitialSettingPresenter {
 
+
 }

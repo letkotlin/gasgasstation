@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
- * Created by kws on 2017. 11. 22..
+ * Created by kws on 2017. 11. 29..
  */
 @Module
 class NetworkModule {
