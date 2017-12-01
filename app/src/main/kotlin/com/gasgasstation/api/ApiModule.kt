@@ -1,4 +1,4 @@
-package com.gasgasstation.dagger
+package com.gasgasstation.api
 
 import com.gasgasstation.App
 import com.gasgasstation.BuildConfig
@@ -16,30 +16,28 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
- * Created by kws on 2017. 11. 29..
+ * Created by kws on 2017. 11. 30..
  */
+@Singleton
 @Module
-class NetworkModule {
+class ApiModule {
     private val CONNECT_TIMEOUT: Long = 30
     private val WRITE_TIMEOUT: Long = 30
     private val READ_TIMEOUT: Long = 30
     private val baseUrl: String = "your base url"
 
     @Provides
-    @Singleton
     fun provideCache(application: App): Cache {
         val cacheSize = 10 * 1024 * 1024 // 10MB
         return Cache(application.cacheDir, cacheSize.toLong())
     }
 
     @Provides
-    @Singleton
     fun provideGson(): Gson {
         return GsonBuilder().create()
     }
 
     @Provides
-    @Singleton
     fun provideOkHttpClient(cache: Cache, interceptor: Interceptor): OkHttpClient {
         val logger: HttpLoggingInterceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
@@ -58,7 +56,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -68,7 +65,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideInterceptor(): Interceptor {
         return Interceptor {
             val builder: Request.Builder = it.request().newBuilder()

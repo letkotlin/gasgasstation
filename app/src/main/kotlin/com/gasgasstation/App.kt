@@ -1,29 +1,32 @@
 package com.gasgasstation
 
 import android.app.Application
-import android.content.Context
-import com.gasgasstation.dagger.*
+import com.gasgasstation.api.ApiModule
+import com.gasgasstation.dagger.InitialSettingComponent
+import com.gasgasstation.dagger.InitialSettingModule
+import com.gasgasstation.dagger.PreferenceModule
+import dagger.Component
 
 /**
  * Created by kws on 2017. 11. 22..
  */
 class App : Application() {
 
-    val singleton: AppComponent by lazy {
-        DaggerAppComponent.builder()
-                .networkModule(NetworkModule())
-                .preferenceModule(PreferenceModule())
-                .appModule(AppModule(this))
-                .build()
-    }
+    lateinit var appComponent: AppComponent
+        private set
 
     override fun onCreate() {
         super.onCreate()
+        appComponent = DaggerAppComponent.create()
+
     }
 
-    companion object {
-        fun getAppComponent(context: Context): AppComponent {
-            return (context.applicationContext as App).singleton
-        }
-    }
+    fun appComponent() = appComponent
+
+}
+
+@Component(modules = arrayOf(PreferenceModule::class, ApiModule::class))
+interface AppComponent {
+    fun inject(application: App)
+    fun initialSettingComponent(initialSettingModule: InitialSettingModule): InitialSettingComponent
 }

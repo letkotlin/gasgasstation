@@ -9,11 +9,11 @@ import javax.inject.Singleton
 /**
  * Created by kws on 2017. 11. 29..
  */
+@Singleton
 @Module
 class PreferenceModule {
 
     @Provides
-    @Singleton
     fun provideSettingPreference(app: App): SettingPreference {
         return SettingPreference(app)
     }

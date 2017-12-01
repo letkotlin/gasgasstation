@@ -5,6 +5,9 @@ package com.gasgasstation.presenter
  */
 interface InitialSettingPresenter {
 
+    fun selectOil();
+
+    fun selectNavi();
 
     interface View {
 
