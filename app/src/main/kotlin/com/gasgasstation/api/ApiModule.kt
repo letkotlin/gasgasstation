@@ -2,6 +2,10 @@ package com.gasgasstation.api
 
 import com.gasgasstation.App
 import com.gasgasstation.BuildConfig
+import com.gasgasstation.constant.Const.Companion.CONNECT_TIMEOUT
+import com.gasgasstation.constant.Const.Companion.DAUM_API_URL
+import com.gasgasstation.constant.Const.Companion.READ_TIMEOUT
+import com.gasgasstation.constant.Const.Companion.WRITE_TIMEOUT
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -13,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -20,25 +25,21 @@ import javax.inject.Singleton
  */
 @Singleton
 @Module
-class ApiModule {
-    private val CONNECT_TIMEOUT: Long = 30
-    private val WRITE_TIMEOUT: Long = 30
-    private val READ_TIMEOUT: Long = 30
-    private val baseUrl: String = "your base url"
+class ApiModule @Inject internal constructor(private val app: App) {
 
     @Provides
-    fun provideCache(application: App): Cache {
+    internal fun cache(): Cache {
         val cacheSize = 10 * 1024 * 1024 // 10MB
-        return Cache(application.cacheDir, cacheSize.toLong())
+        return Cache(app.cacheDir, cacheSize.toLong())
     }
 
     @Provides
-    fun provideGson(): Gson {
+    internal fun gson(): Gson {
         return GsonBuilder().create()
     }
 
     @Provides
-    fun provideOkHttpClient(cache: Cache, interceptor: Interceptor): OkHttpClient {
+    internal fun okHttpClient(cache: Cache, interceptor: Interceptor): OkHttpClient {
         val logger: HttpLoggingInterceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
             logger.level = HttpLoggingInterceptor.Level.BODY
@@ -56,16 +57,16 @@ class ApiModule {
     }
 
     @Provides
-    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
+    internal fun retrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(baseUrl)
-                .client(client)
+                .baseUrl(DAUM_API_URL)
+                .client(okHttpClient)
                 .build()
     }
 
     @Provides
-    fun provideInterceptor(): Interceptor {
+    internal fun interceptor(): Interceptor {
         return Interceptor {
             val builder: Request.Builder = it.request().newBuilder()
             builder.header("User-Agent", "Android")

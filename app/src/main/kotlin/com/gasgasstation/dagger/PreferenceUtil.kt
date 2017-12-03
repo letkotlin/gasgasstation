@@ -1,17 +1,21 @@
-package com.gasgasstation.preference
+package com.gasgasstation.dagger
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.gasgasstation.constant.Const
+import javax.inject.Inject
 
 /**
  * Created by kws on 2017. 11. 22..
  */
-abstract class PreferenceUtil constructor(private val context: Context) {
+class PreferenceUtil @Inject internal constructor(private val context: Context) {
 
-    fun get(key: String): Any? = context.getSharedPreferences(key, Context.MODE_PRIVATE)
+    fun getString(key: String, defaultValue: String?): String {
+        return context.getSharedPreferences(Const.TAG, Context.MODE_PRIVATE).getString(key, defaultValue)
+    }
 
-    fun put(key: String, value: Any?): Unit {
-        val editor: SharedPreferences.Editor = context.getSharedPreferences(key, Context.MODE_PRIVATE).edit()
+    fun put(key: String, value: Any?) {
+        val editor: SharedPreferences.Editor = context.getSharedPreferences(Const.TAG, Context.MODE_PRIVATE).edit()
         when (value) {
             is Int -> editor.putInt(key, value)
             is Boolean -> editor.putBoolean(key, value)
@@ -23,7 +27,7 @@ abstract class PreferenceUtil constructor(private val context: Context) {
         editor.apply()
     }
 
-    fun clear(key: String): Unit {
+    fun clear(key: String) {
         val editor: SharedPreferences.Editor = context.getSharedPreferences(key, Context.MODE_PRIVATE).edit()
         editor.clear()
         editor.apply()

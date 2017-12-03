@@ -1,4 +1,4 @@
-package com.gasgasstation.ui
+package com.gasgasstation.util
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

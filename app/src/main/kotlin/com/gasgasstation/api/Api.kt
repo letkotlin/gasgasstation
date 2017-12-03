@@ -16,6 +16,10 @@ class Api @Inject internal constructor(retrofit: Retrofit) {
         opinetApi = retrofit.create(OpinetApi::class.java)
     }
 
+    fun searchGas() : String{
+        return "ok"
+    }
+
     internal interface DaumApi {
 
     }

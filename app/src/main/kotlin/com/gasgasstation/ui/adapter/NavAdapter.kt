@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import com.gasgasstation.R
 import com.gasgasstation.base.adapter.AdapterModel
 import com.gasgasstation.base.adapter.AdapterView
+import com.gasgasstation.constant.PreferenceName
 import kotlinx.android.synthetic.main.item_init_setting.view.*
 
 /**
  * Created by kws on 2017. 11. 30..
  */
 interface NavAdapterModel : AdapterModel<String>
+
 interface NavAdapterView : AdapterView
 
-class NavAdapter(private val items: ArrayList<String> = ArrayList<String>()) : RecyclerView.Adapter<NavAdapter.InitialSettingViewHolder>(), NavAdapterModel, NavAdapterView {
+class NavAdapter(private val items: ArrayList<String> = ArrayList<String>(), private val onClick: (String, String) -> Unit) : RecyclerView.Adapter<NavAdapter.InitialSettingViewHolder>(), NavAdapterModel, NavAdapterView {
 
     override fun onBindViewHolder(holder: InitialSettingViewHolder?, position: Int) {
         val item = getItem(position)
@@ -24,7 +26,7 @@ class NavAdapter(private val items: ArrayList<String> = ArrayList<String>()) : R
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): InitialSettingViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_init_setting, parent, false)
-        return InitialSettingViewHolder(view)
+        return InitialSettingViewHolder(view, onClick)
     }
 
     override fun refresh() {
@@ -59,13 +61,14 @@ class NavAdapter(private val items: ArrayList<String> = ArrayList<String>()) : R
         return items.size
     }
 
-    class InitialSettingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class InitialSettingViewHolder(itemView: View, val onClick: (String, String) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: String?) {
             if (item == null)
                 return
 
             itemView.tv_title.text = item
+            itemView.ll_root.setOnClickListener { onClick.invoke(PreferenceName.MAP_TYPE, item) }
         }
     }
 

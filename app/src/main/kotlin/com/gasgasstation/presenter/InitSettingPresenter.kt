@@ -5,9 +5,9 @@ package com.gasgasstation.presenter
  */
 interface InitSettingPresenter {
 
-    fun selectOil();
+    fun saveSettingData(key: String, value: String)
 
-    fun selectNavi();
+    fun getSettingData(key: String): Any?
 
     interface View {
 

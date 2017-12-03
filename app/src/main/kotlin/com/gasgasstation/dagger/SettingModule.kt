@@ -1,9 +1,9 @@
 package com.gasgasstation.dagger
 
 import com.gasgasstation.App
-import com.gasgasstation.preference.SettingPreference
 import dagger.Module
 import dagger.Provides
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -11,10 +11,10 @@ import javax.inject.Singleton
  */
 @Singleton
 @Module
-class PreferenceModule {
+class SettingModule @Inject internal constructor(private val app: App){
 
     @Provides
-    fun provideSettingPreference(app: App): SettingPreference {
-        return SettingPreference(app)
+    internal fun preferenceUtil(): PreferenceUtil {
+        return PreferenceUtil(app)
     }
 }

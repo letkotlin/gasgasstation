@@ -3,9 +3,12 @@ package com.gasgasstation.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
+import com.gasgasstation.constant.Const
+import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.InitSettingModule
 import com.gasgasstation.model.enum.MapType
 import com.gasgasstation.model.enum.OilType
@@ -24,8 +27,8 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     @Inject lateinit var oilAdapterView: OilAdapterView
     @Inject lateinit var navAdapterView: NavAdapterView
 
-    val oilAdapter by lazy { OilAdapter(oilData) }
-    val navAdapter by lazy { NavAdapter(navData) }
+    val oilAdapter by lazy { OilAdapter(oilData, { key, value -> presenter.saveSettingData(key, value) }) }
+    val navAdapter by lazy { NavAdapter(navData, { key, value -> presenter.saveSettingData(key, value) }) }
 
     val oilData: ArrayList<String> = arrayListOf(OilType.B027.oil, OilType.D047.oil, OilType.B034.oil, OilType.C004.oil, OilType.K015.oil)
     val navData: ArrayList<String> = arrayListOf(MapType.GOOGLE.map, MapType.KAKAO.map, MapType.TMAP.map)
@@ -46,14 +49,11 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
         rvOil.layoutManager = LinearLayoutManager(this)
         rvNavi.layoutManager = LinearLayoutManager(this)
-//        oilAdapter = InitialSettingAdapter(oilData, { key, value ->
-//
-//        })
-//        navAdapter = InitialSettingAdapter(navData, { key, value ->
-//
-//        })
         rvOil.adapter = oilAdapter
         rvNavi.adapter = navAdapter
+
+        Log.i(Const.TAG, "InitSettingActivity OIL_TYPE = " + presenter.getSettingData(PreferenceName.OIL_TYPE))
+        Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " + presenter.getSettingData(PreferenceName.MAP_TYPE))
 
         btNext.setOnClickListener {
             var intent = Intent(this, GasStationListActivity::class.java)

@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity() {
             var intent = Intent(this, InitSettingActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, 2000)
 
     }
 
