@@ -2,10 +2,11 @@ package com.gasgasstation
 
 import android.app.Application
 import com.gasgasstation.api.ApiModule
-import com.gasgasstation.dagger.InitialSettingComponent
-import com.gasgasstation.dagger.InitialSettingModule
+import com.gasgasstation.dagger.InitSettingComponent
+import com.gasgasstation.dagger.InitSettingModule
 import com.gasgasstation.dagger.PreferenceModule
 import dagger.Component
+import javax.inject.Singleton
 
 /**
  * Created by kws on 2017. 11. 22..
@@ -26,7 +27,8 @@ class App : Application() {
 }
 
 @Component(modules = arrayOf(PreferenceModule::class, ApiModule::class))
+@Singleton
 interface AppComponent {
     fun inject(application: App)
-    fun initialSettingComponent(initialSettingModule: InitialSettingModule): InitialSettingComponent
+    fun initSettingComponent(initSettingModule: InitSettingModule): InitSettingComponent
 }

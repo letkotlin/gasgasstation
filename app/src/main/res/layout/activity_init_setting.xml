@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
     android:backgroundTint="@color/colorAccent"
-    tools:context=".view.InitialSettingActivity">
+    tools:context=".ui.InitSettingActivity">
 
     <TextView
         android:id="@+id/tvOilDesc"

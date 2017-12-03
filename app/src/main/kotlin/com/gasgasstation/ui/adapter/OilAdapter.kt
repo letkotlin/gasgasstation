@@ -1,4 +1,4 @@
-package com.gasgasstation.view.adapter
+package com.gasgasstation.ui.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,17 +7,18 @@ import android.view.ViewGroup
 import com.gasgasstation.R
 import com.gasgasstation.base.adapter.AdapterModel
 import com.gasgasstation.base.adapter.AdapterView
-import kotlinx.android.synthetic.main.item_initial_setting.view.*
+import kotlinx.android.synthetic.main.item_init_setting.view.*
 
-/**
+/**j
  * Created by kws on 2017. 11. 30..
  */
 
-interface InitialSettingAdapterModel : AdapterModel<String>
+//, private val onClick: ((String, String) -> Unit)
+interface OilAdapterModel : AdapterModel<String>
 
-interface InitialSettingAdapterView : AdapterView
+interface OilAdapterView : AdapterView
 
-class InitialSettingAdapter(private val items: ArrayList<String>, private val onClick: ((String, String) -> Unit)) : RecyclerView.Adapter<InitialSettingAdapter.InitialSettingViewHolder>(), InitialSettingAdapterView, InitialSettingAdapterModel {
+class OilAdapter(private val items: ArrayList<String> = ArrayList<String>()) : RecyclerView.Adapter<OilAdapter.InitialSettingViewHolder>(), OilAdapterView, OilAdapterModel {
 
     override fun onBindViewHolder(holder: InitialSettingViewHolder?, position: Int) {
         val item = getItem(position)
@@ -25,7 +26,7 @@ class InitialSettingAdapter(private val items: ArrayList<String>, private val on
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): InitialSettingViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_initial_setting, parent, false)
+        val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_init_setting, parent, false)
         return InitialSettingViewHolder(view)
     }
 

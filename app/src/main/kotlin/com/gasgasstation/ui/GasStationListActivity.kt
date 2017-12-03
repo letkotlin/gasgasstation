@@ -1,4 +1,4 @@
-package com.gasgasstation.view
+package com.gasgasstation.ui
 
 import android.os.Bundle
 import com.gasgasstation.R

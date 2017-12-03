@@ -1,4 +1,4 @@
-package com.gasgasstation.view
+package com.gasgasstation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity() {
 
         // 일정 시간 후에 화면 전환
         Handler().postDelayed({
-            var intent = Intent(this, InitialSettingActivity::class.java)
+            var intent = Intent(this, InitSettingActivity::class.java)
             startActivity(intent)
             finish()
         }, 3000)
