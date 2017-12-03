@@ -8,6 +8,8 @@ ext {
     retrofitVersion = "2.2.0"
     okHttpVersion = '3.5.0'
     daggerVersion = "2.13"
+    rxjava = "2.1.7"
+    rxjavaAndroid = "2.0.1"
 }
 
 android {
@@ -16,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.gasgasstation"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -82,6 +84,10 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okHttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    // rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjavaAndroid"
 
     // 권한요청 tedPermission
     implementation "gun0912.ted:tedpermission:1.0.3"

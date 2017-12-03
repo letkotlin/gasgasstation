@@ -5,4 +5,6 @@
     <string name="base_navi_desc">기본 네비게이션을 설정합니다</string>
     <string name="base_oil_desc">기본 유종을 설정합니다</string>
     <string name="btton_next"><![CDATA[다음 >]]></string>
+    <string name="auth_rationale_msg">주유주유소를 이용하시려면 위치 권한을 허용해주세요.</string>
+    <string name="auth_denied_msg">현재위치 주변 주유소 검색을 위해 위치 권한이 필수로 필요합니다.</string>
 </resources>
