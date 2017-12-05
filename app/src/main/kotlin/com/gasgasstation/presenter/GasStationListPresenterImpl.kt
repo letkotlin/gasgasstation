@@ -3,6 +3,7 @@ package com.gasgasstation.presenter
 import com.gasgasstation.BuildConfig
 import com.gasgasstation.api.DaumApi
 import com.gasgasstation.api.OpinetApi
+import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.PreferenceUtil
 import com.gasgasstation.model.Coords
 import com.gasgasstation.model.OilType
@@ -34,8 +35,11 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     var coordDocument = it.documents?.get(0)!!
-                    findAllGasStation(BuildConfig.OPINET_API_KEY, coordDocument.x, coordDocument.y, "5000", "1", OilType.B027.name, "json")
+                    findAllGasStation(BuildConfig.OPINET_API_KEY, coordDocument.x, coordDocument.y,
+                            getSettingData(PreferenceName.DISTANCE_TYPE)!!, getSettingData(PreferenceName.SORT_TYPE)!!,
+                            getSettingData(PreferenceName.OIL_TYPE)!!, "json")
                 }, { it.printStackTrace() })
+
     }
 
     override fun getCoord2address(x: Double, y: Double, inputCoord: String) {

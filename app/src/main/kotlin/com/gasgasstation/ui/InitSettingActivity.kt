@@ -10,8 +10,10 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.InitSettingModule
+import com.gasgasstation.model.DistanceType
 import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
+import com.gasgasstation.model.SortType
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView
@@ -55,10 +57,21 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
         Log.i(Const.TAG, "InitSettingActivity OIL_TYPE = " + presenter.getSettingData(PreferenceName.OIL_TYPE))
         Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " + presenter.getSettingData(PreferenceName.MAP_TYPE))
 
+        var oilType = presenter.getSettingData(PreferenceName.OIL_TYPE)
+        Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " +   OilType.valueOf(oilType as String))
+
+        baseSetting()
+
         btNext.setOnClickListener {
             var intent = Intent(this, GasStationListActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+    }
+
+    fun baseSetting() {
+        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D5.distance)
+        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
     }
 }
