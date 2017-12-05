@@ -12,6 +12,7 @@ import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.dagger.GasStationListModule
+import com.gasgasstation.model.Coords
 import com.gasgasstation.presenter.GasStationListPresenter
 import kotlinx.android.synthetic.main.activity_gasstation_list.*
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
-                presenter.getCoord2address(location.longitude, location.latitude, "WGS84")
+                presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}

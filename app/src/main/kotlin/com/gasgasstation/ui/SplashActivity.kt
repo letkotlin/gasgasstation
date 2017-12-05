@@ -4,10 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
-import com.gasgasstation.constant.Const
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import java.util.*
@@ -26,8 +24,6 @@ class SplashActivity : BaseActivity() {
         showPermission()
         landingInitSetting()
 
-        Log.i(Const.TAG, "SplashActivity DAUM_API_KEY = " + Const.DAUM_API_KEY)
-        Log.i(Const.TAG, "SplashActivity OPINET_API_KEY = " + Const.OPINET_API_KEY)
     }
 
     fun showPermission() {

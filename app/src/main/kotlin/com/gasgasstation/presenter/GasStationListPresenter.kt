@@ -5,7 +5,7 @@ package com.gasgasstation.presenter
  */
 interface GasStationListPresenter {
 
-    fun getCoord2address(x:Double, y:Double, inputCoord: String)
+    fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
     fun getSettingData(key: String): Any?
 
