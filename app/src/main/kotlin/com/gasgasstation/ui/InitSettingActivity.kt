@@ -10,8 +10,8 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.InitSettingModule
-import com.gasgasstation.model.enum.MapType
-import com.gasgasstation.model.enum.OilType
+import com.gasgasstation.model.MapType
+import com.gasgasstation.model.OilType
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView

@@ -47,7 +47,15 @@ android {
     compileOptions.incremental = false
 
     buildTypes {
+        debug {
+            debuggable true
+            buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
+            buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
+        }
+
         release {
+            buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
+            buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -79,7 +87,7 @@ dependencies {
 
     // retrofit
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okHttpVersion"

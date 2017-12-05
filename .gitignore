@@ -60,4 +60,6 @@ freeline_project_description.json
 ### Android Patch ###
 gen-external-apklibs
 
+gradle.properties
+
 # End of https://www.gitignore.io/api/android

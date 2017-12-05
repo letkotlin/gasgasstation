@@ -2,9 +2,7 @@ package com.gasgasstation
 
 import android.app.Application
 import com.gasgasstation.api.ApiModule
-import com.gasgasstation.dagger.InitSettingComponent
-import com.gasgasstation.dagger.InitSettingModule
-import com.gasgasstation.dagger.SettingModule
+import com.gasgasstation.dagger.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,7 +17,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder()
-                .apiModule(ApiModule(this))
                 .settingModule(SettingModule(this))
                 .build()
 
@@ -34,4 +31,5 @@ class App : Application() {
 interface AppComponent {
     fun inject(app: App)
     fun initSettingComponent(initSettingModule: InitSettingModule): InitSettingComponent
+    fun gasStationListComponent(gasStationListModule: GasStationListModule): GasStationListComponent
 }

@@ -8,10 +8,10 @@
     tools:context=".ui.SplashActivity">
 
     <TextView
+        android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="@string/splash_text"
         android:textAlignment="center"
         android:textSize="20sp" />
 
