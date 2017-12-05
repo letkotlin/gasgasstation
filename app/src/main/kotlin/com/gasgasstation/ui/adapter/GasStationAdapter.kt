@@ -8,6 +8,7 @@ import com.gasgasstation.R
 import com.gasgasstation.base.adapter.AdapterModel
 import com.gasgasstation.base.adapter.AdapterView
 import com.gasgasstation.model.GasStationType.Companion.getGasStationImg
+import com.gasgasstation.model.SortType
 import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.util.numberFormat
 import kotlinx.android.synthetic.main.item_gas_station.view.*
@@ -16,7 +17,8 @@ import kotlinx.android.synthetic.main.item_gas_station.view.*
  * Created by kws on 2017. 11. 30..
  */
 interface GasStationAdapterModel : AdapterModel<GasStation> {
-    fun setOilType(oilType:String)
+    fun setOilType(oilType: String)
+    fun sortList(sortType: SortType)
 }
 
 interface GasStationAdapterView : AdapterView
@@ -70,6 +72,13 @@ class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<Gas
 
     override fun setOilType(oilType: String) {
         this.oilType = oilType
+    }
+
+    override fun sortList(sortType: SortType) {
+        if (SortType.DISTANCE == sortType)
+            this.items.sortWith(compareBy({ it.DISTANCE }))
+        else
+            this.items.sortWith(compareBy({ it.PRICE }))
     }
 
     class GasStationHolder(itemView: View, val onClick: (String, String) -> Unit) : RecyclerView.ViewHolder(itemView) {

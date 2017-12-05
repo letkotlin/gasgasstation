@@ -49,17 +49,17 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rvOil.layoutManager = LinearLayoutManager(this)
-        rvNavi.layoutManager = LinearLayoutManager(this)
-        rvOil.adapter = oilAdapter
-        rvNavi.adapter = navAdapter
+        rv_oil.layoutManager = LinearLayoutManager(this)
+        rv_navi.layoutManager = LinearLayoutManager(this)
+        rv_oil.adapter = oilAdapter
+        rv_navi.adapter = navAdapter
 
         Log.i(Const.TAG, "InitSettingActivity OIL_TYPE = " + presenter.getSettingData(PreferenceName.OIL_TYPE))
         Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " + presenter.getSettingData(PreferenceName.MAP_TYPE))
 
         baseSetting()
 
-        btNext.setOnClickListener {
+        bt_next.setOnClickListener {
             var intent = Intent(this, GasStationListActivity::class.java)
             startActivity(intent)
             finish()

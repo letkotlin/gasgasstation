@@ -7,6 +7,7 @@ import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.PreferenceUtil
 import com.gasgasstation.model.Coords
 import com.gasgasstation.model.OilType
+import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
 import com.gasgasstation.model.daum.TransCoord
 import com.gasgasstation.model.opinet.OPINET
@@ -21,6 +22,10 @@ import javax.inject.Inject
  */
 class GasStationListPresenterImpl @Inject internal constructor(private val view: GasStationListPresenter.View, private val preference: PreferenceUtil, private val daumApi: DaumApi,
                                                                private val opinetApi: OpinetApi, private val adapterModel: GasStationAdapterModel) : GasStationListPresenter {
+    override fun sortList(sortType: SortType) {
+        adapterModel.sortList(sortType)
+        view.refresh()
+    }
 
     fun findAllGasStation(code: String, x: Double, y: Double, radius: String, sort: String, prodcd: String, out: String) {
         var flowable: Flowable<OPINET> = opinetApi.findAllGasStation(code, x, y, radius, sort, prodcd, out)

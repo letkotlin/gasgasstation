@@ -12,9 +12,11 @@ import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
+import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.GasStationListModule
 import com.gasgasstation.model.Coords
 import com.gasgasstation.model.OilType
+import com.gasgasstation.model.SortType
 import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
@@ -50,9 +52,20 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rvGasStation.layoutManager = LinearLayoutManager(this)
-        rvGasStation.adapter = adapter
-        rvGasStation.isNestedScrollingEnabled = false
+        rv_gas_station.layoutManager = LinearLayoutManager(this)
+        rv_gas_station.adapter = adapter
+        rv_gas_station.isNestedScrollingEnabled = false
+
+        tv_sort.text = getString(SortType.getSortTypeToString(presenter.getSettingData(PreferenceName.SORT_TYPE) as String))
+        tv_sort.setOnClickListener({
+            if (tv_sort.text == getString(R.string.sort_distance)) {
+                presenter.sortList(SortType.PRICE)
+                tv_sort.text = getString(R.string.sort_price)
+            } else {
+                presenter.sortList(SortType.DISTANCE)
+                tv_sort.text = getString(R.string.sort_distance)
+            }
+        })
 
         startLocationManager()
     }

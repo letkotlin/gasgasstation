@@ -9,7 +9,7 @@
     tools:context=".ui.InitSettingActivity">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvOilDesc"
+        android:id="@+id/tv_oil_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -20,13 +20,13 @@
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rvOil"
+        app:layout_constraintBottom_toTopOf="@+id/rv_oil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvOil"
+        android:id="@+id/rv_oil"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
@@ -34,13 +34,13 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/list_view_border"
-        app:layout_constraintBottom_toTopOf="@id/tvNaviDesc"
+        app:layout_constraintBottom_toTopOf="@id/tv_navi_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOilDesc" />
+        app:layout_constraintTop_toBottomOf="@id/tv_oil_desc" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvNaviDesc"
+        android:id="@+id/tv_navi_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -50,13 +50,13 @@
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rvOil"
+        app:layout_constraintBottom_toTopOf="@+id/rv_oil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvNavi" />
+        app:layout_constraintTop_toBottomOf="@id/rv_navi" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvNavi"
+        android:id="@+id/rv_navi"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
@@ -64,13 +64,13 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/list_view_border"
-        app:layout_constraintBottom_toTopOf="@+id/btNext"
+        app:layout_constraintBottom_toTopOf="@+id/bt_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvNaviDesc" />
+        app:layout_constraintTop_toBottomOf="@id/tv_navi_desc" />
 
     <Button
-        android:id="@+id/btNext"
+        android:id="@+id/bt_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
@@ -83,6 +83,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvNavi" />
+        app:layout_constraintTop_toBottomOf="@id/rv_navi" />
 
 </android.support.constraint.ConstraintLayout>
