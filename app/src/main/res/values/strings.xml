@@ -10,6 +10,18 @@
     <string name="sort_distance">거리순</string>
     <string name="sort_price">가격순</string>
     <string name="setting">설정</string>
+    <string name="close">닫기</string>
     <string name="won">원</string>
     <string name="km">km</string>
+    <string name="find_setting">찾기 설정</string>
+    <string name="find_distance">찾기 범위</string>
+    <string name="oil_type">오일 타입</string>
+    <string name="gas_station_type">주유소 브랜드</string>
+    <string name="sort_type">정렬기준</string>
+    <string name="map_type">연동지도 서비스</string>
+    <string name="etc">기타</string>
+    <string name="maker">만든 사람들</string>
+    <string name="reporting">버그리포팅 및 제안</string>
+    <string name="review_write">리뷰 남기기</string>
+    <string name="arrow">></string>
 </resources>

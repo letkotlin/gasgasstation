@@ -5,7 +5,6 @@ import com.gasgasstation.api.DaumApi
 import com.gasgasstation.api.OpinetApi
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.PreferenceUtil
-import com.gasgasstation.model.Coords
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
@@ -38,7 +37,7 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 }, { it.printStackTrace() })
     }
 
-    fun transCoord(x: Double, y: Double, inputCoord: String, outputCoord: String) {
+    override fun transCoord(x: Double, y: Double, inputCoord: String, outputCoord: String) {
         var flowable: Flowable<TransCoord> = daumApi.tanscoord(x, y, inputCoord, outputCoord)
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,7 +56,6 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     view.setCurrentAddress(it.documents?.get(0)?.address?.address_name)
-                    transCoord(x, y, Coords.WGS84.name, Coords.KTM.name)
                 }, { it.printStackTrace() })
     }
 

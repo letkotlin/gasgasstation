@@ -15,17 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.InitSettingActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.GasStationListActivity"
-            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".ui.InitSettingActivity" />
+        <activity android:name=".ui.GasStationListActivity"></activity>
+        <activity android:name=".ui.SettingActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
-    
+
 </manifest>

@@ -2,6 +2,7 @@ package com.gasgasstation.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -37,6 +38,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     }
 
     lateinit var locationManager: LocationManager
+    lateinit var locationListener : LocationListener
 
     override fun inject() {
         (applicationContext as App)
@@ -68,14 +70,20 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         })
 
         startLocationManager()
+
+        tv_setting.setOnClickListener {
+            var intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     @SuppressLint("MissingPermission")
     fun startLocationManager() {
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val locationListener = object : LocationListener {
+        locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
+                presenter.transCoord(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
                 presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
             }
 
@@ -94,4 +102,8 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         adapterView.refresh()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        locationManager.removeUpdates(locationListener)
+    }
 }

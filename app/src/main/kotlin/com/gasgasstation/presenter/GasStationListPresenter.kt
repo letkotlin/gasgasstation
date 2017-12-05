@@ -6,6 +6,7 @@ import com.gasgasstation.model.SortType
  * Created by kws on 2017. 11. 28..
  */
 interface GasStationListPresenter {
+    fun transCoord(x: Double, y: Double, inputCoord: String, outputCoord: String)
 
     fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
