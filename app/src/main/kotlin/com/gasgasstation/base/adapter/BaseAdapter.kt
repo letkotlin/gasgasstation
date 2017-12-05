@@ -13,6 +13,7 @@ interface AdapterModel<T> {
     fun clear()
 
     fun size(): Int
+
 }
 
 interface AdapterView {

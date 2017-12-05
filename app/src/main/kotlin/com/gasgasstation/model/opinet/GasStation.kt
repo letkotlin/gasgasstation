@@ -5,9 +5,9 @@ package com.gasgasstation.model.opinet
  */
 data class OPINET(var RESULT: RESULT)
 
-data class RESULT(var OIL: List<OIL>)
+data class RESULT(var OIL: List<GasStation>)
 
-data class OIL(val DISTANCE: String,
+data class GasStation(val DISTANCE: String,
                val PRICE: String,
                val POLL_DIV_CD: String,
                val GIS_X_COOR: String,

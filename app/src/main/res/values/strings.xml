@@ -7,4 +7,9 @@
     <string name="btton_next"><![CDATA[다음 >]]></string>
     <string name="auth_rationale_msg">주유주유소를 이용하시려면 위치 권한을 허용해주세요.</string>
     <string name="auth_denied_msg">현재위치 주변 주유소 검색을 위해 위치 권한이 필수로 필요합니다.</string>
+    <string name="sort_distance">거리순</string>
+    <string name="sort_price">가격순</string>
+    <string name="setting">설정</string>
+    <string name="won">원</string>
+    <string name="km">km</string>
 </resources>

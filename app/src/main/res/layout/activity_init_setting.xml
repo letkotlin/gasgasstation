@@ -8,7 +8,7 @@
     android:backgroundTint="@color/colorAccent"
     tools:context=".ui.InitSettingActivity">
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvOilDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,6 +17,7 @@
         android:layout_marginTop="25dp"
         android:text="@string/base_oil_desc"
         android:textAlignment="center"
+        android:textColor="@color/colorBlack"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvOil"
@@ -38,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOilDesc" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvNaviDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
         android:layout_marginStart="15dp"
         android:text="@string/base_navi_desc"
         android:textAlignment="center"
+        android:textColor="@color/colorBlack"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvOil"

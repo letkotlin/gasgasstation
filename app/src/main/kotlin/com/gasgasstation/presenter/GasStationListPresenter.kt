@@ -12,6 +12,8 @@ interface GasStationListPresenter {
     interface View {
 
         fun setCurrentAddress(address: String?)
+
+        fun refresh()
     }
 
 }

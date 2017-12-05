@@ -57,9 +57,6 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
         Log.i(Const.TAG, "InitSettingActivity OIL_TYPE = " + presenter.getSettingData(PreferenceName.OIL_TYPE))
         Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " + presenter.getSettingData(PreferenceName.MAP_TYPE))
 
-        var oilType = presenter.getSettingData(PreferenceName.OIL_TYPE)
-        Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " +   OilType.valueOf(oilType as String))
-
         baseSetting()
 
         btNext.setOnClickListener {
@@ -71,7 +68,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     }
 
     fun baseSetting() {
-        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D5.distance)
+        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
         presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
     }
 }

@@ -10,6 +10,7 @@ import com.gasgasstation.model.OilType
 import com.gasgasstation.model.daum.Coord2address
 import com.gasgasstation.model.daum.TransCoord
 import com.gasgasstation.model.opinet.OPINET
+import com.gasgasstation.ui.adapter.GasStationAdapterModel
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,14 +19,17 @@ import javax.inject.Inject
 /**
  * Created by kws on 2017. 11. 28..
  */
-class GasStationListPresenterImpl @Inject internal constructor(private val view: GasStationListPresenter.View, private val preference: PreferenceUtil, private val daumApi: DaumApi, private val opinetApi: OpinetApi) : GasStationListPresenter {
+class GasStationListPresenterImpl @Inject internal constructor(private val view: GasStationListPresenter.View, private val preference: PreferenceUtil, private val daumApi: DaumApi,
+                                                               private val opinetApi: OpinetApi, private val adapterModel: GasStationAdapterModel) : GasStationListPresenter {
 
     fun findAllGasStation(code: String, x: Double, y: Double, radius: String, sort: String, prodcd: String, out: String) {
         var flowable: Flowable<OPINET> = opinetApi.findAllGasStation(code, x, y, radius, sort, prodcd, out)
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    adapterModel.setOilType(OilType.getOilName(prodcd))
+                    adapterModel.addItems(it.RESULT.OIL)
+                    view.refresh()
                 }, { it.printStackTrace() })
     }
 
@@ -37,7 +41,7 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                     var coordDocument = it.documents?.get(0)!!
                     findAllGasStation(BuildConfig.OPINET_API_KEY, coordDocument.x, coordDocument.y,
                             getSettingData(PreferenceName.DISTANCE_TYPE)!!, getSettingData(PreferenceName.SORT_TYPE)!!,
-                            getSettingData(PreferenceName.OIL_TYPE)!!, "json")
+                            OilType.getOilType(getSettingData(PreferenceName.OIL_TYPE)!!), "json")
                 }, { it.printStackTrace() })
 
     }
