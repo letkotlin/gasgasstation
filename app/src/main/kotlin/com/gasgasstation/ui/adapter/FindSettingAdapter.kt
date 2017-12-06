@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_init_setting.view.*
 /**
  * Created by kws on 2017. 11. 30..
  */
-class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String>()) : RecyclerView.Adapter<FindSettingAdapter.FindSettingViewHolder>(), AdapterModel<String>, AdapterView {
+class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String>(), private val onClick: (String) -> Unit) : RecyclerView.Adapter<FindSettingAdapter.FindSettingViewHolder>(), AdapterModel<String>, AdapterView {
 
     override fun onBindViewHolder(holder: FindSettingViewHolder?, position: Int) {
         val item = getItem(position)
@@ -21,7 +21,7 @@ class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FindSettingViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_setting, parent, false)
-        return FindSettingViewHolder(view)
+        return FindSettingViewHolder(view, onClick)
     }
 
     override fun refresh() {
@@ -56,14 +56,14 @@ class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String
         return items.size
     }
 
-    class FindSettingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class FindSettingViewHolder(itemView: View, val onClick: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: String?) {
             if (item == null)
                 return
 
             itemView.tv_title.text = item
-
+            itemView.ll_root.setOnClickListener { onClick.invoke(item) }
         }
     }
 

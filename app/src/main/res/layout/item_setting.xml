@@ -22,7 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:text="@string/arrow"
+        android:text="@string/left_arrow"
         android:textColor="@color/colorGray3"
         android:textSize="20sp" />
 

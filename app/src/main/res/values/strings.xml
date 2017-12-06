@@ -23,5 +23,6 @@
     <string name="maker">만든 사람들</string>
     <string name="reporting">버그리포팅 및 제안</string>
     <string name="review_write">리뷰 남기기</string>
-    <string name="arrow">></string>
+    <string name="left_arrow">&gt;</string>
+    <string name="right_arrow">&lt;</string>
 </resources>

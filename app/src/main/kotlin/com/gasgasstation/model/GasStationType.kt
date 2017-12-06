@@ -1,6 +1,5 @@
 package com.gasgasstation.model
 
-import android.graphics.drawable.Drawable
 import com.gasgasstation.R
 
 /**

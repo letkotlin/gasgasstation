@@ -18,6 +18,8 @@
         <activity android:name=".ui.InitSettingActivity" />
         <activity android:name=".ui.GasStationListActivity"></activity>
         <activity android:name=".ui.SettingActivity"></activity>
+        <activity android:name=".ui.SettingDetailActivity"></activity>
+        <activity android:name=".ui.MakerActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

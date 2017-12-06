@@ -5,4 +5,6 @@ package com.gasgasstation.model
  */
 enum class DistanceType(val distance: String) {
     D3("3000"), D5("5000"), D10("10000"), D20("20000")
+
+
 }

@@ -67,9 +67,7 @@ class OilAdapter(private val items: ArrayList<String> = ArrayList<String>(), pri
             if (item == null)
                 return
             itemView.tv_title.text = item
-            itemView.ll_root.setOnClickListener {
-                onClick.invoke(PreferenceName.OIL_TYPE, item)
-            }
+            itemView.ll_root.setOnClickListener { onClick.invoke(PreferenceName.OIL_TYPE, item) }
         }
     }
 

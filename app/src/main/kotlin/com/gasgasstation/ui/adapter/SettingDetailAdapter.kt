@@ -12,16 +12,16 @@ import kotlinx.android.synthetic.main.item_init_setting.view.*
 /**
  * Created by kws on 2017. 11. 30..
  */
-class EtcAdapter(private val items: ArrayList<String> = ArrayList<String>(), private val onClick: (String) -> Unit) : RecyclerView.Adapter<EtcAdapter.EtcSettingViewHolder>(), AdapterModel<String>, AdapterView {
+class SettingDetailAdapter(private val items: ArrayList<String> = ArrayList<String>(), private val onClick: (String) -> Unit) : RecyclerView.Adapter<SettingDetailAdapter.SettingDetailViewHolder>(), AdapterModel<String>, AdapterView {
 
-    override fun onBindViewHolder(holder: EtcSettingViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: SettingDetailViewHolder?, position: Int) {
         val item = getItem(position)
         holder?.bind(item)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EtcSettingViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SettingDetailViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_setting, parent, false)
-        return EtcSettingViewHolder(view, onClick)
+        return SettingDetailViewHolder(view, onClick)
     }
 
     override fun refresh() {
@@ -56,7 +56,7 @@ class EtcAdapter(private val items: ArrayList<String> = ArrayList<String>(), pri
         return items.size
     }
 
-    class EtcSettingViewHolder(itemView: View, val onClick: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class SettingDetailViewHolder(itemView: View, val onClick: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: String?) {
             if (item == null)
