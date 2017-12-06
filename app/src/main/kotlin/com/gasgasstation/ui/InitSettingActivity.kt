@@ -10,10 +10,9 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.InitSettingModule
-import com.gasgasstation.model.DistanceType
 import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
-import com.gasgasstation.model.SortType
+import com.gasgasstation.model.Setting
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView
@@ -29,11 +28,17 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     @Inject lateinit var oilAdapterView: OilAdapterView
     @Inject lateinit var navAdapterView: NavAdapterView
 
-    val oilAdapter by lazy { OilAdapter(oilData, { key, value -> presenter.saveSettingData(key, value) }) }
-    val navAdapter by lazy { NavAdapter(navData, { key, value -> presenter.saveSettingData(key, value) }) }
+    val oilAdapter by lazy { OilAdapter(oilData, {key, value -> presenter.choiceData(key, value) }) }
+    val navAdapter by lazy { NavAdapter(navData, {key, value -> presenter.choiceData(key, value) }) }
 
-    val oilData: ArrayList<String> = arrayListOf(OilType.B027.oil, OilType.D047.oil, OilType.B034.oil, OilType.C004.oil, OilType.K015.oil)
-    val navData: ArrayList<String> = arrayListOf(MapType.GOOGLE.map, MapType.KAKAO.map, MapType.TMAP.map)
+    val oilData: ArrayList<Setting> = arrayListOf(Setting(OilType.B027.oil),
+            Setting(OilType.D047.oil),
+            Setting(OilType.B034.oil),
+            Setting(OilType.C004.oil),
+            Setting(OilType.K015.oil))
+    val navData: ArrayList<Setting> = arrayListOf(Setting(MapType.GOOGLE.map),
+            Setting(MapType.KAKAO.map),
+            Setting(MapType.TMAP.map))
 
     override fun inject() {
         (applicationContext as App)
@@ -68,7 +73,12 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     }
 
     fun baseSetting() {
-        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
-        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
+//        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
+//        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
     }
+
+    override fun refresh() {
+
+    }
+
 }

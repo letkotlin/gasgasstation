@@ -3,14 +3,10 @@ package com.gasgasstation.dagger
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.presenter.InitSettingPresenterImpl
 import com.gasgasstation.ui.InitSettingActivity
-import com.gasgasstation.ui.adapter.NavAdapter
-import com.gasgasstation.ui.adapter.NavAdapterView
-import com.gasgasstation.ui.adapter.OilAdapter
-import com.gasgasstation.ui.adapter.OilAdapterView
+import com.gasgasstation.ui.adapter.*
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
-import javax.inject.Named
 
 /**
  * Created by kws on 2017. 11. 29..
@@ -32,17 +28,15 @@ class InitSettingModule(private val view: InitSettingPresenter.View,
     internal fun view(): InitSettingPresenter.View = view
 
     @Provides
-    @Named("oilAdapter")
     internal fun oilAdapterView(): OilAdapterView = oilAdapter
 
     @Provides
-    @Named("navAdapter")
     internal fun navAdapterView(): NavAdapterView = navAdapter
 
     @Provides
-    internal fun oilAdapterModel(): OilAdapterView = oilAdapter
+    internal fun oilAdapterModel(): OilAdapterModel = oilAdapter
 
     @Provides
-    internal fun navAdapterModel(): NavAdapterView = navAdapter
+    internal fun navAdapterModel(): NavAdapterModel = navAdapter
 
 }

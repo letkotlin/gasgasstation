@@ -38,7 +38,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     }
 
     lateinit var locationManager: LocationManager
-    lateinit var locationListener : LocationListener
+    lateinit var locationListener: LocationListener
 
     override fun inject() {
         (applicationContext as App)
