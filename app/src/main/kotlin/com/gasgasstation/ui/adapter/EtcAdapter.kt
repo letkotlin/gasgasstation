@@ -12,16 +12,16 @@ import kotlinx.android.synthetic.main.item_init_setting.view.*
 /**
  * Created by kws on 2017. 11. 30..
  */
-class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String>()) : RecyclerView.Adapter<FindSettingAdapter.FindSettingViewHolder>(), AdapterModel<String>, AdapterView {
+class EtcAdapter(private val items: ArrayList<String> = ArrayList<String>()) : RecyclerView.Adapter<EtcAdapter.EtcSettingViewHolder>(), AdapterModel<String>, AdapterView {
 
-    override fun onBindViewHolder(holder: FindSettingViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: EtcSettingViewHolder?, position: Int) {
         val item = getItem(position)
         holder?.bind(item)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FindSettingViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EtcSettingViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_setting, parent, false)
-        return FindSettingViewHolder(view)
+        return EtcSettingViewHolder(view)
     }
 
     override fun refresh() {
@@ -56,7 +56,7 @@ class FindSettingAdapter(private val items: ArrayList<String> = ArrayList<String
         return items.size
     }
 
-    class FindSettingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class EtcSettingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: String?) {
             if (item == null)
