@@ -53,7 +53,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorGray3">
+            android:background="@color/colorGray4">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,12 +71,15 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:text="@string/find_setting"
-                        android:textColor="@color/colorGray2"
+                        android:textColor="@color/colorBlack"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
 
-                <include layout="@layout/line_full_gray" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_find_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
