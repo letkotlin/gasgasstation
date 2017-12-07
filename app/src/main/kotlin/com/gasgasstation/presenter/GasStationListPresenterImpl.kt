@@ -5,6 +5,7 @@ import com.gasgasstation.api.DaumApi
 import com.gasgasstation.api.OpinetApi
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.PreferenceUtil
+import com.gasgasstation.model.DistanceType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
@@ -44,7 +45,8 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .subscribe({
                     var coordDocument = it.documents?.get(0)!!
                     findAllGasStation(BuildConfig.OPINET_API_KEY, coordDocument.x, coordDocument.y,
-                            getSettingData(PreferenceName.DISTANCE_TYPE)!!, getSettingData(PreferenceName.SORT_TYPE)!!,
+                            DistanceType.getDistance(getSettingData(PreferenceName.DISTANCE_TYPE)!!),
+                            SortType.getSort(getSettingData(PreferenceName.SORT_TYPE)!!),
                             OilType.getOilType(getSettingData(PreferenceName.OIL_TYPE)!!), "json")
                 }, { it.printStackTrace() })
 

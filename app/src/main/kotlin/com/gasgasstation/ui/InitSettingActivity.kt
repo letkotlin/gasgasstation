@@ -13,6 +13,7 @@ import com.gasgasstation.dagger.InitSettingModule
 import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.Setting
+import com.gasgasstation.model.SortType
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView
@@ -28,8 +29,8 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     @Inject lateinit var oilAdapterView: OilAdapterView
     @Inject lateinit var navAdapterView: NavAdapterView
 
-    val oilAdapter by lazy { OilAdapter(oilData, {key, value -> presenter.choiceData(key, value) }) }
-    val navAdapter by lazy { NavAdapter(navData, {key, value -> presenter.choiceData(key, value) }) }
+    val oilAdapter by lazy { OilAdapter(oilData, { key, value -> presenter.choiceData(key, value) }) }
+    val navAdapter by lazy { NavAdapter(navData, { key, value -> presenter.choiceData(key, value) }) }
 
     val oilData: ArrayList<Setting> = arrayListOf(Setting(OilType.B027.oil),
             Setting(OilType.D047.oil),
@@ -73,8 +74,8 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     }
 
     fun baseSetting() {
+        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
 //        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
-//        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
     }
 
     override fun refresh() {

@@ -9,10 +9,7 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.SettingDetailModule
-import com.gasgasstation.model.GasStationType
-import com.gasgasstation.model.MapType
-import com.gasgasstation.model.OilType
-import com.gasgasstation.model.Setting
+import com.gasgasstation.model.*
 import com.gasgasstation.presenter.SettingDetailPresenter
 import com.gasgasstation.ui.adapter.SettingDetailAdapter
 import com.gasgasstation.ui.adapter.SettingDetailAdapterModel
@@ -87,9 +84,9 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
     }
 
     private fun makeDistanceData() {
-        items = arrayListOf(Setting("3km"),
-                Setting("5km"),
-                Setting("10km"))
+        items = arrayListOf(Setting(DistanceType.D3.distance),
+                Setting(DistanceType.D5.distance),
+                Setting(DistanceType.D10.distance))
     }
 
     private fun makeGasStationTypeData() {

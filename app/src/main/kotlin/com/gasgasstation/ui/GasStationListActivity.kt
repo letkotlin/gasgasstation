@@ -58,7 +58,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         rv_gas_station.adapter = adapter
         rv_gas_station.isNestedScrollingEnabled = false
 
-        tv_sort.text = getString(SortType.getSortTypeToString(presenter.getSettingData(PreferenceName.SORT_TYPE) as String))
+        tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE) as String
         tv_sort.setOnClickListener({
             if (tv_sort.text == getString(R.string.sort_distance)) {
                 presenter.sortList(SortType.PRICE)
