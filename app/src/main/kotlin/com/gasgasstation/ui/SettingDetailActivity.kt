@@ -87,12 +87,11 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
     }
 
     private fun makeDistanceData() {
-        items = arrayListOf(Setting("3km"),
-                Setting("5km"),
-                Setting("10km"))
-        fetchType(PreferenceName.DISTANCE_TYPE, "3km")
+        items = arrayListOf(Setting(DistanceType.D3.distance),
+                Setting(DistanceType.D5.distance),
+                Setting(DistanceType.D10.distance))
+        fetchType(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
     }
-
 
     private fun makeGasStationTypeData() {
         items = arrayListOf(Setting(GasStationType.ALL.gasStation),
@@ -108,7 +107,7 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
         fetchType(PreferenceName.GAS_STATION_TYPE, GasStationType.ALL.gasStation)
     }
 
-    private fun fetchType(preferenceName: String, default : String) {
+    private fun fetchType(preferenceName: String, default: String) {
         var type = presenter.getSettingData(preferenceName)
         if (type == null)
             type = default

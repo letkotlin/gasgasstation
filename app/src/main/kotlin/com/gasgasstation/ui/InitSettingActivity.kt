@@ -13,6 +13,7 @@ import com.gasgasstation.dagger.InitSettingModule
 import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.Setting
+import com.gasgasstation.model.SortType
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView
@@ -69,6 +70,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
             finish()
         }
 
+        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
     }
 
     fun fatchSettingInfo() {

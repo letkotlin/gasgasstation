@@ -62,7 +62,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         swipe_layer.setOnRefreshListener { reqLocationUpdate() }
         swipe_layer.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
-        tv_sort.text = getString(SortType.getSortTypeToString(presenter.getSettingData(PreferenceName.SORT_TYPE) as String))
+        tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE) as String
         tv_sort.setOnClickListener({
             if (tv_sort.text == getString(R.string.sort_distance)) {
                 presenter.sortList(SortType.PRICE)
