@@ -6,10 +6,12 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.widget.Toast
 import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
@@ -35,14 +37,11 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     val adapter by lazy {
         GasStationAdapter(ArrayList<GasStation>(),
                 OilType.B027.name,
-                { key, value -> presenter.toString() })
+                { longitude, latitude -> landingGoogle(longitude, latitude) })
     }
 
     lateinit var locationManager: LocationManager
     lateinit var locationListener: LocationListener
-
-    var longitude: Double? = null
-    var latitude: Double? = null
 
     override fun inject() {
         (applicationContext as App)
@@ -104,6 +103,17 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @SuppressLint("MissingPermission")
     fun reqLocationUpdate() {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+    }
+
+    fun landingGoogle(longitude: String, latitude: String) {
+        val gmmIntentUri = Uri.parse("google.navigation:q=" + longitude + "," + longitude + "&mode=d")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.`package` = "com.google.android.apps.maps"
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent)
+        } else
+            Toast.makeText(this, R.string.not_install_google_map, Toast.LENGTH_SHORT).show()
+
     }
 
     override fun setCurrentAddress(address: String?) {

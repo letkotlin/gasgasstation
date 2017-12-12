@@ -25,4 +25,5 @@
     <string name="review_write">리뷰 남기기</string>
     <string name="left_arrow">&gt;</string>
     <string name="right_arrow">&lt;</string>
+    <string name="not_install_google_map">구글맵이 설치되어 있지 않습니다.</string>
 </resources>

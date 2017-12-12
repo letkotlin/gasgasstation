@@ -8,6 +8,8 @@ import com.gasgasstation.model.SortType
 interface GasStationListPresenter {
     fun transCoord(x: Double, y: Double, inputCoord: String, outputCoord: String)
 
+    fun transCoord2(x: Double, y: Double, inputCoord: String, outputCoord: String)
+
     fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
     fun getSettingData(key: String): String
