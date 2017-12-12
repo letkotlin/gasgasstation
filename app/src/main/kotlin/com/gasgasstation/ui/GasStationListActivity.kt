@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.gasgasstation.App
@@ -58,6 +59,9 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         rv_gas_station.adapter = adapter
         rv_gas_station.isNestedScrollingEnabled = false
 
+        swipe_layer.setOnRefreshListener { reqLocationUpdate() }
+        swipe_layer.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
+
         tv_sort.text = getString(SortType.getSortTypeToString(presenter.getSettingData(PreferenceName.SORT_TYPE) as String))
         tv_sort.setOnClickListener({
             if (tv_sort.text == getString(R.string.sort_distance)) {
@@ -69,28 +73,34 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             }
         })
 
-        startLocationManager()
-
         tv_setting.setOnClickListener {
             var intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
+
+        initLocationManager()
+        reqLocationUpdate()
     }
 
     @SuppressLint("MissingPermission")
-    fun startLocationManager() {
+    fun initLocationManager() {
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
                 presenter.transCoord(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
                 presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
+                locationManager.removeUpdates(locationListener)
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
             override fun onProviderEnabled(provider: String) {}
             override fun onProviderDisabled(provider: String) {}
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun reqLocationUpdate() {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0f, locationListener)
     }
 

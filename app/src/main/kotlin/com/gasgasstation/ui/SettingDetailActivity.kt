@@ -9,10 +9,7 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.SettingDetailModule
-import com.gasgasstation.model.GasStationType
-import com.gasgasstation.model.MapType
-import com.gasgasstation.model.OilType
-import com.gasgasstation.model.Setting
+import com.gasgasstation.model.*
 import com.gasgasstation.presenter.SettingDetailPresenter
 import com.gasgasstation.ui.adapter.SettingDetailAdapter
 import com.gasgasstation.ui.adapter.SettingDetailAdapterModel
@@ -71,11 +68,13 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
         items = arrayListOf(Setting(MapType.GOOGLE.map),
                 Setting(MapType.KAKAO.map),
                 Setting(MapType.TMAP.map))
+        fetchType(PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
     }
 
     private fun makeSortTypeData() {
         items = arrayListOf(Setting(getString(R.string.sort_distance)),
                 Setting(getString(R.string.sort_price)))
+        fetchType(PreferenceName.SORT_TYPE, getString(R.string.sort_distance))
     }
 
     private fun makeOilTypeData() {
@@ -84,13 +83,16 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
                 Setting(OilType.B034.oil),
                 Setting(OilType.C004.oil),
                 Setting(OilType.K015.oil))
+        fetchType(PreferenceName.OIL_TYPE, OilType.B027.oil)
     }
 
     private fun makeDistanceData() {
         items = arrayListOf(Setting("3km"),
                 Setting("5km"),
                 Setting("10km"))
+        fetchType(PreferenceName.DISTANCE_TYPE, "3km")
     }
+
 
     private fun makeGasStationTypeData() {
         items = arrayListOf(Setting(GasStationType.ALL.gasStation),
@@ -103,6 +105,19 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
                 Setting(GasStationType.ETC.gasStation),
                 Setting(GasStationType.E1G.gasStation),
                 Setting(GasStationType.SKG.gasStation))
+        fetchType(PreferenceName.GAS_STATION_TYPE, GasStationType.ALL.gasStation)
+    }
+
+    private fun fetchType(preferenceName: String, default : String) {
+        var type = presenter.getSettingData(preferenceName)
+        if (type == null)
+            type = default
+        for (setting: Setting in items) {
+            if (setting.name == type) {
+                setting.isChecked = true
+                break
+            }
+        }
     }
 
     private fun selectItem(name: String) {

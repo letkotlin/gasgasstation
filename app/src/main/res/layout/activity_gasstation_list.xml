@@ -79,12 +79,19 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_gas_station"
+                
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_layer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp" />
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_gas_station"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp" />
+
+                </android.support.v4.widget.SwipeRefreshLayout>
 
             </LinearLayout>
 

@@ -28,8 +28,8 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     @Inject lateinit var oilAdapterView: OilAdapterView
     @Inject lateinit var navAdapterView: NavAdapterView
 
-    val oilAdapter by lazy { OilAdapter(oilData, {key, value -> presenter.choiceData(key, value) }) }
-    val navAdapter by lazy { NavAdapter(navData, {key, value -> presenter.choiceData(key, value) }) }
+    val oilAdapter by lazy { OilAdapter(oilData, { key, value -> presenter.choiceData(key, value) }) }
+    val navAdapter by lazy { NavAdapter(navData, { key, value -> presenter.choiceData(key, value) }) }
 
     val oilData: ArrayList<Setting> = arrayListOf(Setting(OilType.B027.oil),
             Setting(OilType.D047.oil),
@@ -53,6 +53,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fatchSettingInfo()
 
         rv_oil.layoutManager = LinearLayoutManager(this)
         rv_navi.layoutManager = LinearLayoutManager(this)
@@ -62,8 +63,6 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
         Log.i(Const.TAG, "InitSettingActivity OIL_TYPE = " + presenter.getSettingData(PreferenceName.OIL_TYPE))
         Log.i(Const.TAG, "InitSettingActivity MAP_TYPE = " + presenter.getSettingData(PreferenceName.MAP_TYPE))
 
-        baseSetting()
-
         bt_next.setOnClickListener {
             var intent = Intent(this, GasStationListActivity::class.java)
             startActivity(intent)
@@ -72,9 +71,21 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
     }
 
-    fun baseSetting() {
-//        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
-//        presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
+    fun fatchSettingInfo() {
+        fetchType(navData, PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
+        fetchType(oilData, PreferenceName.OIL_TYPE, OilType.B027.oil)
+    }
+
+    private fun fetchType(items: ArrayList<Setting>, preferenceName: String, default: String) {
+        var type = presenter.getSettingData(preferenceName)
+        if (type == null)
+            type = default
+        for (setting: Setting in items) {
+            if (setting.name == type) {
+                setting.isChecked = true
+                break
+            }
+        }
     }
 
     override fun refresh() {
