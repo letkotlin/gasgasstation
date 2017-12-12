@@ -61,5 +61,5 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 }, { it.printStackTrace() })
     }
 
-    override fun getSettingData(key: String): String? = preference.getString(key, "")
+    override fun getSettingData(key: String): String = preference.getString(key, "")
 }

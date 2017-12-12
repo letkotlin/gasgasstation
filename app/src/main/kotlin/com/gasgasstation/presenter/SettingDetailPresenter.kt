@@ -7,7 +7,7 @@ interface SettingDetailPresenter {
 
     fun saveSettingData(key: String, value: String)
 
-    fun getSettingData(key: String): Any?
+    fun getSettingData(key: String): String
 
     fun choiceData(key: String, name: String)
 

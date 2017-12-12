@@ -74,14 +74,16 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     }
 
     fun fatchSettingInfo() {
-        fetchType(navData, PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
         fetchType(oilData, PreferenceName.OIL_TYPE, OilType.B027.oil)
+        fetchType(navData, PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
     }
 
     private fun fetchType(items: ArrayList<Setting>, preferenceName: String, default: String) {
         var type = presenter.getSettingData(preferenceName)
-        if (type == null)
+        if (type.isEmpty() ) {
+            presenter.saveSettingData(preferenceName, default)
             type = default
+        }
         for (setting: Setting in items) {
             if (setting.name == type) {
                 setting.isChecked = true

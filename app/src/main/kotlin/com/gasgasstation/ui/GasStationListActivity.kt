@@ -41,6 +41,9 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     lateinit var locationManager: LocationManager
     lateinit var locationListener: LocationListener
 
+    var longitude: Double? = null
+    var latitude: Double? = null
+
     override fun inject() {
         (applicationContext as App)
                 .appComponent
@@ -57,12 +60,11 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         rv_gas_station.layoutManager = LinearLayoutManager(this)
         rv_gas_station.adapter = adapter
-        rv_gas_station.isNestedScrollingEnabled = false
 
         swipe_layer.setOnRefreshListener { reqLocationUpdate() }
         swipe_layer.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
-        tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE) as String
+        tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE)
         tv_sort.setOnClickListener({
             if (tv_sort.text == getString(R.string.sort_distance)) {
                 presenter.sortList(SortType.PRICE)
@@ -101,7 +103,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     @SuppressLint("MissingPermission")
     fun reqLocationUpdate() {
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0f, locationListener)
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
     }
 
     override fun setCurrentAddress(address: String?) {
@@ -110,6 +112,8 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun refresh() {
         adapterView.refresh()
+        if (swipe_layer.isRefreshing)
+            swipe_layer.isRefreshing = false
     }
 
     override fun onDestroy() {

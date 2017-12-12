@@ -27,6 +27,6 @@ class SettingDetailPresenterImpl @Inject internal constructor(private val view: 
         preference.put(key, value)
     }
 
-    override fun getSettingData(key: String): String? = preference.getString(key, "")
+    override fun getSettingData(key: String): String = preference.getString(key, "")
 
 }

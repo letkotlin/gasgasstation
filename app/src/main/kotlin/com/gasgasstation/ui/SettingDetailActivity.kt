@@ -109,8 +109,10 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
 
     private fun fetchType(preferenceName: String, default: String) {
         var type = presenter.getSettingData(preferenceName)
-        if (type == null)
+        if (type == null) {
+            presenter.saveSettingData(preferenceName, default)
             type = default
+        }
         for (setting: Setting in items) {
             if (setting.name == type) {
                 setting.isChecked = true
