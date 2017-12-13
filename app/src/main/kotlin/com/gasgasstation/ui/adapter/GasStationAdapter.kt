@@ -12,7 +12,6 @@ import com.gasgasstation.constant.Const
 import com.gasgasstation.model.GasStationType.Companion.getGasStationImg
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.opinet.GasStation
-import com.gasgasstation.util.numberFormat
 import kotlinx.android.synthetic.main.item_gas_station.view.*
 
 /**
@@ -93,8 +92,8 @@ class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<Gas
             itemView.iv_station_type.setImageResource(getGasStationImg(item.POLL_DIV_CD))
             itemView.tv_oil_type.text = oilType
             itemView.tv_os_nm.text = item.OS_NM
-            itemView.tv_price.text = item.PRICE.numberFormat()
-            itemView.tv_distance.text = "%.1f".format(item.DISTANCE.toDouble() / 1000)
+            itemView.tv_price.text = item.PRICE.toString()
+            itemView.tv_distance.text = "%.1f".format(item.DISTANCE / 1000)
             itemView.ll_root.setOnClickListener { onClick.invoke(item.GIS_X_COOR, item.GIS_Y_COOR) }
         }
     }

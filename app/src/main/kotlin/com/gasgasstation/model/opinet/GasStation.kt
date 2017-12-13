@@ -7,8 +7,8 @@ data class OPINET(var RESULT: RESULT)
 
 data class RESULT(var OIL: List<GasStation>)
 
-data class GasStation(val DISTANCE: String,
-               val PRICE: String,
+data class GasStation(val DISTANCE: Double,
+               val PRICE: Int,
                val POLL_DIV_CD: String,
                val GIS_X_COOR: String,
                val OS_NM: String,

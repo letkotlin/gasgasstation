@@ -37,7 +37,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     val adapter by lazy {
         GasStationAdapter(ArrayList<GasStation>(),
                 OilType.B027.name,
-                { longitude, latitude -> landingGoogle(longitude, latitude) })
+                { x, y -> landingMap(x, y) })
+    }
+
+    private fun landingMap(x: String, y: String) {
+        Log.i(Const.TAG, "landingMap() x = " + x + " , y = " + y)
+        presenter.landingGoogleMap(x.toDouble(), y.toDouble(), Coords.KTM.name, Coords.WGS84.name)
     }
 
     lateinit var locationManager: LocationManager
@@ -72,6 +77,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                 presenter.sortList(SortType.DISTANCE)
                 tv_sort.text = getString(R.string.sort_distance)
             }
+
         })
 
         tv_setting.setOnClickListener {
@@ -89,7 +95,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
-                presenter.transCoord(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
+                presenter.getGasStationList(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
                 presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
                 locationManager.removeUpdates(locationListener)
             }
@@ -105,17 +111,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
     }
 
-    fun landingGoogle(longitude: String, latitude: String) {
-        val gmmIntentUri = Uri.parse("google.navigation:q=" + longitude + "," + longitude + "&mode=d")
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.`package` = "com.google.android.apps.maps"
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent)
-        } else
-            Toast.makeText(this, R.string.not_install_google_map, Toast.LENGTH_SHORT).show()
-
-    }
-
     override fun setCurrentAddress(address: String?) {
         tv_address.text = address
     }
@@ -129,5 +124,16 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     override fun onDestroy() {
         super.onDestroy()
         locationManager.removeUpdates(locationListener)
+    }
+
+    //@TODO 한국 구글지도는 길찾기를 지원하지 않음
+    override fun openGoogleMap(x: Double, y: Double) {
+        val gmmIntentUri = Uri.parse("google.navigation:q=" + y + "," + x + "&mode=d")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.`package` = "com.google.android.apps.maps"
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent)
+        } else
+            Toast.makeText(this, R.string.not_install_google_map, Toast.LENGTH_SHORT).show()
     }
 }
