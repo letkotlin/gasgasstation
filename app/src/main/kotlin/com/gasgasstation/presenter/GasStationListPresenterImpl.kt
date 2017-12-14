@@ -22,6 +22,15 @@ import javax.inject.Inject
  */
 class GasStationListPresenterImpl @Inject internal constructor(private val view: GasStationListPresenter.View, private val preference: PreferenceUtil, private val daumApi: DaumApi,
                                                                private val opinetApi: OpinetApi, private val adapterModel: GasStationAdapterModel) : GasStationListPresenter {
+    override fun landingTmap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String) {
+        var flowable: Flowable<TransCoord> = daumApi.tanscoord(x, y, inputCoord, outputCoord)
+        flowable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    var coordDocument = it.documents?.get(0)!!
+                    view.openTmap(coordDocument.x, coordDocument.y, name)
+                }, { it.printStackTrace() })
+    }
 
     override fun landingGoogleMap(x: Double, y: Double, inputCoord: String, outputCoord: String) {
         var flowable: Flowable<TransCoord> = daumApi.tanscoord(x, y, inputCoord, outputCoord)
@@ -31,7 +40,6 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                     var coordDocument = it.documents?.get(0)!!
                     view.openGoogleMap(coordDocument.x, coordDocument.y)
                 }, { it.printStackTrace() })
-
     }
 
     override fun sortList(sortType: SortType) {

@@ -11,6 +11,8 @@ interface GasStationListPresenter {
 
     fun landingGoogleMap(x: Double, y: Double, inputCoord: String, outputCoord: String)
 
+    fun landingTmap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String)
+
     fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
     fun getSettingData(key: String): String
@@ -20,6 +22,8 @@ interface GasStationListPresenter {
     interface View {
 
         fun openGoogleMap(x: Double, y: Double)
+
+        fun openTmap(x: Double, y: Double, name: String)
 
         fun setCurrentAddress(address: String?)
 

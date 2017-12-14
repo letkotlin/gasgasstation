@@ -26,7 +26,7 @@ interface GasStationAdapterView : AdapterView
 
 class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<GasStation>(),
                         private var oilType: String,
-                        private val onClick: (String, String) -> Unit) : RecyclerView.Adapter<GasStationAdapter.GasStationHolder>(), GasStationAdapterModel, GasStationAdapterView {
+                        private val onClick: (String, String, String) -> Unit) : RecyclerView.Adapter<GasStationAdapter.GasStationHolder>(), GasStationAdapterModel, GasStationAdapterView {
 
     override fun onBindViewHolder(holder: GasStationHolder?, position: Int) {
         val item = getItem(position)
@@ -82,7 +82,7 @@ class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<Gas
             this.items.sortWith(compareBy({ it.PRICE }))
     }
 
-    class GasStationHolder(itemView: View, val onClick: (String, String) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class GasStationHolder(itemView: View, val onClick: (String, String, String) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: GasStation?, oilType: String) {
             if (item == null)
@@ -94,7 +94,7 @@ class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<Gas
             itemView.tv_os_nm.text = item.OS_NM
             itemView.tv_price.text = item.PRICE.toString()
             itemView.tv_distance.text = "%.1f".format(item.DISTANCE / 1000)
-            itemView.ll_root.setOnClickListener { onClick.invoke(item.GIS_X_COOR, item.GIS_Y_COOR) }
+            itemView.ll_root.setOnClickListener { onClick.invoke(item.GIS_X_COOR, item.GIS_Y_COOR, item.OS_NM) }
         }
     }
 

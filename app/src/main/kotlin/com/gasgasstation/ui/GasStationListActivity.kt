@@ -19,6 +19,7 @@ import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.GasStationListModule
 import com.gasgasstation.model.Coords
+import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.opinet.GasStation
@@ -37,12 +38,16 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     val adapter by lazy {
         GasStationAdapter(ArrayList<GasStation>(),
                 OilType.B027.name,
-                { x, y -> landingMap(x, y) })
+                { x, y, name -> landingMap(x, y, name) })
     }
 
-    private fun landingMap(x: String, y: String) {
+    private fun landingMap(x: String, y: String, name: String) {
         Log.i(Const.TAG, "landingMap() x = " + x + " , y = " + y)
-        presenter.landingGoogleMap(x.toDouble(), y.toDouble(), Coords.KTM.name, Coords.WGS84.name)
+        val mapType = presenter.getSettingData(PreferenceName.MAP_TYPE)
+        if (mapType == MapType.TMAP.map)
+            presenter.landingTmap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
+
+//        presenter.landingGoogleMap(x.toDouble(), y.toDouble(), Coords.KTM.name, Coords.WGS84.name)
     }
 
     lateinit var locationManager: LocationManager
@@ -126,7 +131,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         locationManager.removeUpdates(locationListener)
     }
 
-    //@TODO 한국 구글지도는 길찾기를 지원하지 않음
+    // TODO 한국 구글지도는 길찾기를 지원하지 않음
     override fun openGoogleMap(x: Double, y: Double) {
         val gmmIntentUri = Uri.parse("google.navigation:q=" + y + "," + x + "&mode=d")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -136,4 +141,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         } else
             Toast.makeText(this, R.string.not_install_google_map, Toast.LENGTH_SHORT).show()
     }
+
+    override fun openTmap(x: Double, y: Double, name: String) {
+        var landingUrl = "http://m.tmap.co.kr/tmap2/mobile/route.jsp?name=" + name + "&lon=" + x + "&lat=" + y
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(landingUrl))
+        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(browserIntent)
+    }
+
 }
