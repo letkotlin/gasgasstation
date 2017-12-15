@@ -27,6 +27,21 @@ enum class GasStationType(val gasStation: String) {
                     SKG.name -> R.drawable.ic_skg
                     else -> R.drawable.ic_etc
                 }
+
+        fun getGasStation(gasStation: String): String =
+                when(gasStation) {
+                    SKE.gasStation -> SKE.name
+                    GSC.gasStation -> GSC.name
+                    HDO.gasStation -> HDO.name
+                    SOL.gasStation -> SOL.name
+                    RTO.gasStation -> RTO.name
+                    RTX.gasStation -> RTX.name
+                    NHO.gasStation -> NHO.name
+                    ETC.gasStation -> ETC.name
+                    E1G.gasStation -> E1G.name
+                    SKG.gasStation -> SKG.name
+                    else -> SKE.name
+                }
     }
 
 }

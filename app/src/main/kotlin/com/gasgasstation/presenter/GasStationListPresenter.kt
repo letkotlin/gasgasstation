@@ -13,6 +13,8 @@ interface GasStationListPresenter {
 
     fun landingTmap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String)
 
+    fun landingKaKaoMap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String)
+
     fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
     fun getSettingData(key: String): String
@@ -25,9 +27,12 @@ interface GasStationListPresenter {
 
         fun openTmap(x: Double, y: Double, name: String)
 
+        fun openKakaomap(x: Double, y: Double, name: String)
+
         fun setCurrentAddress(address: String?)
 
         fun refresh()
     }
+
 
 }

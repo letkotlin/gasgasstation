@@ -26,6 +26,10 @@ import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
+import com.kakao.kakaonavi.KakaoNaviParams
+import com.kakao.kakaonavi.KakaoNaviService
+import com.kakao.kakaonavi.NaviOptions
+import com.kakao.kakaonavi.options.CoordType
 import kotlinx.android.synthetic.main.activity_gasstation_list.*
 import javax.inject.Inject
 
@@ -46,7 +50,8 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val mapType = presenter.getSettingData(PreferenceName.MAP_TYPE)
         if (mapType == MapType.TMAP.map)
             presenter.landingTmap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
-
+        if (mapType == MapType.KAKAO.map)
+            presenter.landingKaKaoMap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
 //        presenter.landingGoogleMap(x.toDouble(), y.toDouble(), Coords.KTM.name, Coords.WGS84.name)
     }
 
@@ -147,6 +152,13 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(landingUrl))
         browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(browserIntent)
+    }
+
+    override fun openKakaomap(x: Double, y: Double, name: String) {
+        val destination = com.kakao.kakaonavi.Location.newBuilder(name, x, y).build()
+        val builder = KakaoNaviParams.newBuilder(destination)
+                .setNaviOptions(NaviOptions.newBuilder().setCoordType(CoordType.WGS84).build())
+        KakaoNaviService.shareDestination(this, builder.build())
     }
 
 }

@@ -3,10 +3,13 @@ package com.gasgasstation.ui
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
+import com.gasgasstation.constant.Const
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.kakao.util.helper.Utility.getKeyHash
 import io.reactivex.Flowable
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -24,7 +27,7 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         showPermission()
         landingInitSetting()
-
+        Log.i(Const.TAG, "keyHash = " + getKeyHash(this))
     }
 
     fun showPermission() {

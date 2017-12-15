@@ -1,11 +1,14 @@
 package com.gasgasstation.presenter
 
+import android.util.Log
 import com.gasgasstation.BuildConfig
 import com.gasgasstation.api.DaumApi
 import com.gasgasstation.api.OpinetApi
+import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.PreferenceUtil
 import com.gasgasstation.model.DistanceType
+import com.gasgasstation.model.GasStationType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
@@ -22,6 +25,16 @@ import javax.inject.Inject
  */
 class GasStationListPresenterImpl @Inject internal constructor(private val view: GasStationListPresenter.View, private val preference: PreferenceUtil, private val daumApi: DaumApi,
                                                                private val opinetApi: OpinetApi, private val adapterModel: GasStationAdapterModel) : GasStationListPresenter {
+    override fun landingKaKaoMap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String) {
+        var flowable: Flowable<TransCoord> = daumApi.tanscoord(x, y, inputCoord, outputCoord)
+        flowable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    var coordDocument = it.documents?.get(0)!!
+                    view.openKakaomap(coordDocument.x, coordDocument.y, name)
+                }, { it.printStackTrace() })
+    }
+
     override fun landingTmap(x: Double, y: Double, name: String, inputCoord: String, outputCoord: String) {
         var flowable: Flowable<TransCoord> = daumApi.tanscoord(x, y, inputCoord, outputCoord)
         flowable.subscribeOn(Schedulers.io())
@@ -48,12 +61,18 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
     }
 
     fun findAllGasStation(code: String, x: Double, y: Double, radius: String, sort: String, prodcd: String, out: String) {
+        val gasStationType = GasStationType.getGasStation(getSettingData(PreferenceName.GAS_STATION_TYPE))
+        Log.i(Const.TAG, "findAllGasStation gasStationType = " + gasStationType)
         var flowable: Flowable<OPINET> = opinetApi.findAllGasStation(code, x, y, radius, sort, prodcd, out)
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .flatMap { response -> Flowable.fromArray(response.RESULT.OIL) }
+                .flatMap { items -> Flowable.fromIterable(items) }
+                .filter { item -> gasStationType.equals(item.POLL_DIV_CD) }
+                .toList()
                 .subscribe({
                     adapterModel.setOilType(OilType.getOilName(prodcd))
-                    adapterModel.addItems(it.RESULT.OIL)
+                    adapterModel.addItems(it)
                     view.refresh()
                 }, { it.printStackTrace() })
     }

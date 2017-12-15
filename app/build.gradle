@@ -97,6 +97,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaAndroid"
 
+    implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
+
     // 권한요청 tedPermission
     implementation "gun0912.ted:tedpermission:1.0.3"
 
