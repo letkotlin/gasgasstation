@@ -51,11 +51,15 @@ android {
             debuggable true
             buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
             buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
+            buildConfigField "String", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
+            resValue "string", "KAKAO_API_KEY", "\"${rootProject.getProperties().get("kakao.apikey")}\""
         }
 
         release {
             buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
             buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
+            buildConfigField "String", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
+            resValue "string", "KAKAO_API_KEY", "\"${rootProject.getProperties().get("kakao.apikey")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -97,9 +101,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaAndroid"
 
-    implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
-
     // 권한요청 tedPermission
     implementation "gun0912.ted:tedpermission:1.0.3"
+
+    implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
+    implementation "com.google.firebase:firebase-ads:11.4.0"
 
 }
