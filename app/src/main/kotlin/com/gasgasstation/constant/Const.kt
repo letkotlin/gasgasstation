@@ -18,6 +18,5 @@ class Const {
 
         const val DAUM_API_KEY: String = BuildConfig.DAUM_API_KEY
         const val OPINET_API_KEY: String = BuildConfig.OPINET_API_KEY
-        const val ADMOB_APP_ID: String = BuildConfig.ADMOB_APP_ID
     }
 }
