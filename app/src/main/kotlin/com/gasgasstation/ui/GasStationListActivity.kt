@@ -26,6 +26,8 @@ import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.kakao.kakaonavi.KakaoNaviParams
 import com.kakao.kakaonavi.KakaoNaviService
 import com.kakao.kakaonavi.NaviOptions
@@ -72,6 +74,8 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        MobileAds.initialize(this, Const.ADMOB_APP_ID);
+        adView.loadAd(AdRequest.Builder().build())
         rv_gas_station.layoutManager = LinearLayoutManager(this)
         rv_gas_station.adapter = adapter
 
