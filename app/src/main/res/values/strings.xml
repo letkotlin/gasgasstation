@@ -26,4 +26,19 @@
     <string name="left_arrow">&gt;</string>
     <string name="right_arrow">&lt;</string>
     <string name="not_install_google_map">구글맵이 설치되어 있지 않습니다.</string>
+    <string name="app_ver">ver 1.0.1</string>
+    <string name="maker_desc">운전하느라 고생이 많은\n대한민국 모든 아버지들에게 이 앱을 바칩니다.</string>
+    <string name="maker_idea">Main Idea</string>
+    <string name="maker_idea_name">HONGIL YOON</string>
+    <string name="maker_dev_1">LEAD Android Developer</string>
+    <string name="maker_dev_1_name">WOO SEUNG KIM</string>
+    <string name="maker_dev_2">LEAD iOS Developer</string>
+    <string name="maker_dev_2_name">SANGYOON WOO</string>
+    <string name="maker_dev_3">JUNIOR iOS Developer</string>
+    <string name="maker_dev_3_name">HONGIL YOON\nILHWAN RYU</string>
+    <string name="maker_dev_4">LEAD UI/UX Designer</string>
+    <string name="maker_dev_4_name">ILHWAN RYU</string>
+    <string name="email_subject">[주유주유소] 문의</string>
+    <string name="email_fail">메일을 보낼 수 없습니다.</string>
+
 </resources>

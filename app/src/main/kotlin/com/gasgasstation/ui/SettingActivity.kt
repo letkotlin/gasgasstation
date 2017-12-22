@@ -1,9 +1,12 @@
 package com.gasgasstation.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
@@ -50,8 +53,31 @@ class SettingActivity : BaseActivity() {
     private fun landingEtc(name: String) {
         when (name) {
             getString(R.string.maker) -> startActivity(Intent(this, MakerActivity::class.java))
-//            getString(R.string.reporting) -> startActivity(Intent(this, SettingDetailActivity::class.java))
-//            getString(R.string.review_write) -> startActivity(Intent(this, SettingDetailActivity::class.java))
+            getString(R.string.reporting) -> landingEmail()
+            getString(R.string.review_write) -> landingMarket()
         }
+    }
+
+    private fun landingEmail() {
+        val mailto = "mailto:coreanim@gmail.com" +
+                "?cc=" + "indian311@icloud.com, ihryu@me.com, hongilyoon@gmail.com" +
+                "&subject=" + Uri.encode(getString(R.string.email_subject))
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse(mailto)
+        try {
+            startActivity(emailIntent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, R.string.email_fail, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun landingMarket() {
+        val appPackageName = packageName
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)))
+        } catch (anfe: android.content.ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)))
+        }
+
     }
 }
