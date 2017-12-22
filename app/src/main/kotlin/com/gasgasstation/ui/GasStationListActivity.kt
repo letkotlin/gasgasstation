@@ -48,13 +48,11 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     }
 
     private fun landingMap(x: String, y: String, name: String) {
-        Log.i(Const.TAG, "landingMap() x = " + x + " , y = " + y)
         val mapType = presenter.getSettingData(PreferenceName.MAP_TYPE)
         if (mapType == MapType.TMAP.map)
             presenter.landingTmap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
         if (mapType == MapType.KAKAO.map)
             presenter.landingKaKaoMap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
-//        presenter.landingGoogleMap(x.toDouble(), y.toDouble(), Coords.KTM.name, Coords.WGS84.name)
     }
 
     lateinit var locationManager: LocationManager

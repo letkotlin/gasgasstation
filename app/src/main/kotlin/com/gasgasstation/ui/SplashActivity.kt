@@ -5,20 +5,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
-import com.gun0912.tedpermission.PermissionListener
+import com.gasgasstation.constant.PreferenceName
+import com.gasgasstation.dagger.SplashModule
+import com.gasgasstation.presenter.SplashPresenter
 import com.kakao.util.helper.Utility.getKeyHash
 import com.tedpark.tedpermission.rx2.TedRx2Permission
 import io.reactivex.Flowable
-import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity(), SplashPresenter.View {
+
+    @Inject lateinit internal var presenter: SplashPresenter
+
     override fun inject() {
-
+        (applicationContext as App)
+                .appComponent
+                .splashComponent(SplashModule(this))
+                .inject(this)
     }
 
     override fun getLayoutResId(): Int {
@@ -43,26 +52,21 @@ class SplashActivity : BaseActivity() {
                         Toast.makeText(this, R.string.auth_denied_msg, Toast.LENGTH_SHORT).show()
                         showPermission()
                     }
-                }, { throwable -> }, { })
-    }
-
-    internal var permissionlistener: PermissionListener = object : PermissionListener {
-        override fun onPermissionGranted() {
-
-        }
-
-        override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {
-            showPermission()
-        }
+                })
     }
 
     fun landingInitSetting() {
         // 일정 시간 후에 화면 전환
         Flowable.timer(2, TimeUnit.SECONDS)
                 .subscribe({
-                    var intent = Intent(this, InitSettingActivity::class.java)
+                    var intent: Intent
+                    if (presenter.getSettingData(PreferenceName.OIL_TYPE).isEmpty())
+                        intent = Intent(this, InitSettingActivity::class.java)
+                    else
+                        intent = Intent(this, GasStationListActivity::class.java)
                     startActivity(intent)
                     finish()
                 })
     }
+
 }

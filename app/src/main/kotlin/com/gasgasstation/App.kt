@@ -30,6 +30,7 @@ class App : Application() {
 @Singleton
 interface AppComponent {
     fun inject(app: App)
+    fun splashComponent(splashModule: SplashModule): SplashComponent
     fun initSettingComponent(initSettingModule: InitSettingModule): InitSettingComponent
     fun gasStationListComponent(gasStationListModule: GasStationListModule): GasStationListComponent
     fun settingDetailComponent(settingDetailModule: SettingDetailModule): SettingDetailComponent

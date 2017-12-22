@@ -10,10 +10,7 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.InitSettingModule
-import com.gasgasstation.model.MapType
-import com.gasgasstation.model.OilType
-import com.gasgasstation.model.Setting
-import com.gasgasstation.model.SortType
+import com.gasgasstation.model.*
 import com.gasgasstation.presenter.InitSettingPresenter
 import com.gasgasstation.ui.adapter.NavAdapter
 import com.gasgasstation.ui.adapter.NavAdapterView
@@ -71,6 +68,8 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
         }
 
         presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
+        presenter.saveSettingData(PreferenceName.DISTANCE_TYPE, DistanceType.D3.distance)
+        presenter.saveSettingData(PreferenceName.GAS_STATION_TYPE, GasStationType.ALL.gasStation)
     }
 
     fun fatchSettingInfo() {
@@ -80,7 +79,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
     private fun fetchType(items: ArrayList<Setting>, preferenceName: String, default: String) {
         var type = presenter.getSettingData(preferenceName)
-        if (type.isEmpty() ) {
+        if (type.isEmpty()) {
             presenter.saveSettingData(preferenceName, default)
             type = default
         }
