@@ -102,9 +102,11 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaAndroid"
 
     // 권한요청 tedPermission
-    implementation "gun0912.ted:tedpermission:1.0.3"
+    compile 'gun0912.ted:tedpermission-rx2:2.1.0'
 
     implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
     implementation "com.google.firebase:firebase-ads:11.4.0"
 
 }
+
+apply plugin: 'com.google.gms.google-services'
