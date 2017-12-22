@@ -68,7 +68,7 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap { response -> Flowable.fromArray(response.RESULT.OIL) }
                 .flatMap { items -> Flowable.fromIterable(items) }
-                .filter { item -> gasStationType.equals(item.POLL_DIV_CD) }
+                .filter { item -> (GasStationType.ALL.gasStation.equals(gasStationType) || item.POLL_DIV_CD.equals(gasStationType)) }
                 .toList()
                 .subscribe({
                     adapterModel.setOilType(OilType.getOilName(prodcd))

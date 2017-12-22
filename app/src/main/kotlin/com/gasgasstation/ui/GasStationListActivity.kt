@@ -28,18 +28,24 @@ import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.database.*
 import com.kakao.kakaonavi.KakaoNaviParams
 import com.kakao.kakaonavi.KakaoNaviService
 import com.kakao.kakaonavi.NaviOptions
 import com.kakao.kakaonavi.options.CoordType
 import kotlinx.android.synthetic.main.activity_gasstation_list.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     @Inject lateinit internal var presenter: GasStationListPresenter
     @Inject lateinit var adapterView: GasStationAdapterView
+    lateinit var mDatabase: DatabaseReference
+    lateinit var opinetKey: List<String>
 
     val adapter by lazy {
         GasStationAdapter(ArrayList<GasStation>(),
@@ -71,9 +77,11 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         MobileAds.initialize(this, Const.ADMOB_APP_ID);
         adView.loadAd(AdRequest.Builder().build())
+
         rv_gas_station.layoutManager = LinearLayoutManager(this)
         rv_gas_station.adapter = adapter
 
@@ -99,6 +107,59 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         initLocationManager()
         reqLocationUpdate()
+        getOpinetKey()
+    }
+
+    /*
+     오늘 날짜의 총 조회 건수를 조회합니다.
+     1. 오늘 날짜의 조회 건수가 없다면 기존 데이터를 모두 삭제 후 오늘 날짜 값으로 1셋팅합니다.
+     2. 오늘 날짜의 조회 건수가 있다면 현재 개수 + 1 해줍니다.
+     3. 개수 / 1000으로 하여 조회할 때 사용할 key를 셋팅합니다.
+     */
+    private fun setRequestCnt() {
+        val now = getTodayDate()
+        var eventListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                Log.i(Const.TAG, "setRequestCnt() p0 = " + p0?.value)
+                var requestCnt = p0?.value.toString().toInt()
+                if (requestCnt == null) {
+                    mDatabase.child("request_cnt").child(now).setValue(1)
+                    requestCnt = 1
+                } else {
+                    requestCnt = requestCnt++
+                    mDatabase.child("request_cnt").child(now).setValue(requestCnt)
+                }
+                if (requestCnt / 1000 < 3) {
+                    Const.OPINET_API_KEY = opinetKey[requestCnt / 1000]
+                } else
+                    Const.OPINET_API_KEY = opinetKey[3]
+                Log.i(Const.TAG, "Const.OPINET_API_KEY = " + Const.OPINET_API_KEY)
+            }
+        }
+        mDatabase.child("request_cnt").child(getTodayDate()).addListenerForSingleValueEvent(eventListener)
+    }
+
+    private fun getOpinetKey() {
+        var eventListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                //@TODO DataSnapshot to array 방법이 없나?
+                Log.i(Const.TAG, "getOpinetKey() p0 = " + p0?.value)
+                opinetKey = p0?.value.toString().replace("[", "").replace("]", "").split(",")
+            }
+        }
+        mDatabase.child("keys").addListenerForSingleValueEvent(eventListener)
+    }
+
+    private fun getTodayDate(): String {
+        val calendar = Calendar.getInstance()
+        val sdf = SimpleDateFormat("yyyyMMdd")
+        return sdf.format(calendar.time)
     }
 
     @SuppressLint("MissingPermission")
@@ -107,6 +168,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
+                setRequestCnt()
                 presenter.getGasStationList(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
                 presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
                 locationManager.removeUpdates(locationListener)

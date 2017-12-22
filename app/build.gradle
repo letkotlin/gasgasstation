@@ -105,7 +105,9 @@ dependencies {
     compile 'gun0912.ted:tedpermission-rx2:2.1.0'
 
     implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
-    implementation "com.google.firebase:firebase-ads:11.4.0"
+    implementation "com.google.firebase:firebase-ads:11.8.0"
+    implementation "com.google.firebase:firebase-database:11.8.0"
+
 
 }
 
