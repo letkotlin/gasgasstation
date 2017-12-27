@@ -77,20 +77,18 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         Flowable.interval(1, TimeUnit.SECONDS)
                 .takeWhile { GeoCode.latitude == null }
                 .doOnComplete {
-                    setRequestCnt()
-                    presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
+                    reqGasList()
                     presenter.getCoord2address(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name)
                 }.subscribe()
 
-        MobileAds.initialize(this, Const.ADMOB_APP_ID);
+        MobileAds.initialize(this, Const.ADMOB_APP_ID)
         adView.loadAd(AdRequest.Builder().build())
 
         rv_gas_station.layoutManager = LinearLayoutManager(this)
         rv_gas_station.adapter = adapter
 
         swipe_layer.setOnRefreshListener {
-            setRequestCnt()
-            presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
+            reqGasList()
         }
         swipe_layer.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
@@ -115,8 +113,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         RxBus.subscribe(BUS_GET_GAS_LIST, this, Consumer {
             Log.i(Const.TAG, "BUS_GET_GAS_LIST ")
-            setRequestCnt()
-            presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
+            reqGasList()
         })
 
         RxBus.subscribe(BUS_SORT_GAS_LIST, this, Consumer {
@@ -131,7 +128,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
      2. 오늘 날짜의 조회 건수가 있다면 현재 개수 + 1 해줍니다.
      3. 개수 / 1000으로 하여 조회할 때 사용할 key를 셋팅합니다.
      */
-    private fun setRequestCnt() {
+    private fun reqGasList() {
         val now = getTodayDate()
         var eventListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -140,17 +137,18 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             override fun onDataChange(p0: DataSnapshot?) {
                 Log.i(Const.TAG, "setRequestCnt() now = " + now + " p0 = " + p0?.value)
                 var requestCnt = p0?.value
-                if (requestCnt == null)
-                    requestCnt = 1
+                requestCnt = if (requestCnt == null)
+                    1
                 else
-                    requestCnt = requestCnt.toString().toInt().plus(1)
+                    requestCnt.toString().toInt().plus(1)
                 mDatabase.child("request_cnt").child(now).setValue(requestCnt)
 
                 if (requestCnt / 1000 < 3) {
-                    Const.OPINET_API_KEY = OpinetKey.keys[requestCnt / 1000]
+                    Const.OPINET_API_KEY = OpinetKey.keys[requestCnt / 1000].trim()
                 } else
-                    Const.OPINET_API_KEY = OpinetKey.keys[2]
+                    Const.OPINET_API_KEY = OpinetKey.keys[2].trim()
                 Log.i(Const.TAG, "Const.OPINET_API_KEY = " + Const.OPINET_API_KEY)
+                presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
             }
         }
         mDatabase.child("request_cnt").child(getTodayDate()).addListenerForSingleValueEvent(eventListener)
