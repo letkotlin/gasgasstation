@@ -13,7 +13,6 @@ import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
 import com.gasgasstation.model.daum.TransCoord
-import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.model.opinet.OPINET
 import com.gasgasstation.ui.adapter.GasStationAdapterModel
 import io.reactivex.Flowable
@@ -73,6 +72,7 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .toList()
                 .subscribe({
                     adapterModel.setOilType(OilType.getOilName(prodcd))
+                    adapterModel.clear()
                     adapterModel.addItems(it)
                     view.refresh()
                 }, { it.printStackTrace() })

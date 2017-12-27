@@ -138,16 +138,14 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
                 presenter.choiceData(PreferenceName.GAS_STATION_TYPE, name)
                 RxBus.publish(Const.BUS_GET_GAS_LIST, true)
             }
-            getString(R.string.map_type) -> {
-                presenter.choiceData(PreferenceName.MAP_TYPE, name)
-                RxBus.publish(Const.BUS_GET_GAS_LIST, true)
-            }
             getString(R.string.sort_type) -> {
                 presenter.choiceData(PreferenceName.SORT_TYPE, name)
                 RxBus.publish(Const.BUS_SORT_GAS_LIST, true)
             }
+            getString(R.string.map_type) -> {
+                presenter.choiceData(PreferenceName.MAP_TYPE, name)
+            }
         }
-
     }
 
     override fun refresh() {
