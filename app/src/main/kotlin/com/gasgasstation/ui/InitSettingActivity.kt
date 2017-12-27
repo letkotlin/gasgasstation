@@ -36,8 +36,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
             Setting(OilType.K015.oil))
     val navData: ArrayList<Setting> = arrayListOf(
             Setting(MapType.TMAP.map),
-            Setting(MapType.KAKAO.map),
-            Setting(MapType.GOOGLE.map))
+            Setting(MapType.KAKAO.map))
 
     override fun inject() {
         (applicationContext as App)

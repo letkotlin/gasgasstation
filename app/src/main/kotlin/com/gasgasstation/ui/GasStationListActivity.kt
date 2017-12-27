@@ -1,11 +1,6 @@
 package com.gasgasstation.ui
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -20,10 +15,7 @@ import com.gasgasstation.constant.Const.Companion.BUS_GET_GAS_LIST
 import com.gasgasstation.constant.Const.Companion.BUS_SORT_GAS_LIST
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.GasStationListModule
-import com.gasgasstation.model.Coords
-import com.gasgasstation.model.MapType
-import com.gasgasstation.model.OilType
-import com.gasgasstation.model.SortType
+import com.gasgasstation.model.*
 import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
@@ -35,10 +27,12 @@ import com.kakao.kakaonavi.KakaoNaviParams
 import com.kakao.kakaonavi.KakaoNaviService
 import com.kakao.kakaonavi.NaviOptions
 import com.kakao.kakaonavi.options.CoordType
+import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_gasstation_list.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -48,8 +42,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @Inject lateinit internal var presenter: GasStationListPresenter
     @Inject lateinit var adapterView: GasStationAdapterView
     lateinit var mDatabase: DatabaseReference
-    lateinit var opinetKey: List<String>
-    lateinit var currentLocation: Location
 
     val adapter by lazy {
         GasStationAdapter(ArrayList(),
@@ -65,9 +57,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             presenter.landingKaKaoMap(x.toDouble(), y.toDouble(), name, Coords.KTM.name, Coords.WGS84.name)
     }
 
-    lateinit var locationManager: LocationManager
-    lateinit var locationListener: LocationListener
-
     override fun inject() {
         (applicationContext as App)
                 .appComponent
@@ -81,7 +70,17 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().reference;
+
+        getOpinetKey()
+
+        Flowable.interval(1, TimeUnit.SECONDS)
+                .takeWhile { GeoCode.latitude == null }
+                .doOnComplete {
+                    setRequestCnt()
+                    presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
+                    presenter.getCoord2address(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name)
+                }.subscribe()
 
         MobileAds.initialize(this, Const.ADMOB_APP_ID);
         adView.loadAd(AdRequest.Builder().build())
@@ -89,7 +88,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         rv_gas_station.layoutManager = LinearLayoutManager(this)
         rv_gas_station.adapter = adapter
 
-        swipe_layer.setOnRefreshListener { reqLocationUpdate() }
+        swipe_layer.setOnRefreshListener {
+            setRequestCnt()
+            presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
+        }
         swipe_layer.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
         tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE)
@@ -109,14 +111,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             startActivity(intent)
         }
 
-        getOpinetKey()
-        initLocationManager()
-        reqLocationUpdate()
-
         RxBus.subscribe(BUS_GET_GAS_LIST, this, Consumer {
             Log.i(Const.TAG, "BUS_GET_GAS_LIST ")
             setRequestCnt()
-            presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
+            presenter.getGasStationList(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name, Coords.KTM.name)
         })
 
         RxBus.subscribe(BUS_SORT_GAS_LIST, this, Consumer {
@@ -147,9 +145,9 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                 mDatabase.child("request_cnt").child(now).setValue(requestCnt)
 
                 if (requestCnt / 1000 < 3) {
-                    Const.OPINET_API_KEY = opinetKey[requestCnt / 1000]
+                    Const.OPINET_API_KEY = OpinetKey.keys[requestCnt / 1000]
                 } else
-                    Const.OPINET_API_KEY = opinetKey[2]
+                    Const.OPINET_API_KEY = OpinetKey.keys[2]
                 Log.i(Const.TAG, "Const.OPINET_API_KEY = " + Const.OPINET_API_KEY)
             }
         }
@@ -164,7 +162,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             override fun onDataChange(p0: DataSnapshot?) {
                 //@TODO DataSnapshot to array 방법이 없나?
                 Log.i(Const.TAG, "getOpinetKey() p0 = " + p0?.value)
-                opinetKey = p0?.value.toString().replace("[", "").replace("]", "").split(",")
+                OpinetKey.keys = p0?.value.toString().replace("[", "").replace("]", "").split(",")
             }
         }
         mDatabase.child("keys").addListenerForSingleValueEvent(eventListener)
@@ -174,30 +172,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyyMMdd")
         return sdf.format(calendar.time)
-    }
-
-    @SuppressLint("MissingPermission")
-    fun initLocationManager() {
-        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
-                currentLocation = location
-                setRequestCnt()
-                presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
-                presenter.getCoord2address(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name)
-                locationManager.removeUpdates(locationListener)
-            }
-
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    fun reqLocationUpdate() {
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
     }
 
     override fun setCurrentAddress(address: String?) {
@@ -213,7 +187,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     override fun onDestroy() {
         super.onDestroy()
         RxBus.unregister(this)
-        locationManager.removeUpdates(locationListener)
     }
 
     // TODO 한국 구글지도는 길찾기를 지원하지 않음

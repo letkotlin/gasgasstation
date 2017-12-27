@@ -7,8 +7,8 @@
     <string name="btton_next"><![CDATA[다음 >]]></string>
     <string name="auth_rationale_msg">주유주유소를 이용하시려면 위치 권한을 허용해주세요.</string>
     <string name="auth_denied_msg">현재위치 주변 주유소 검색을 위해 위치 권한이 필수로 필요합니다.</string>
-    <string name="sort_distance">거리순</string>
-    <string name="sort_price">가격순</string>
+    <string name="sort_distance">거리순 보기</string>
+    <string name="sort_price">가격순 보기</string>
     <string name="setting">설정</string>
     <string name="close">닫기</string>
     <string name="won">원</string>
@@ -38,6 +38,8 @@
     <string name="maker_dev_3_name">HONGIL YOON\nILHWAN RYU</string>
     <string name="maker_dev_4">LEAD UI/UX Designer</string>
     <string name="maker_dev_4_name">ILHWAN RYU</string>
+    <string name="supporter">Supporter</string>
+    <string name="supporter_name">YEONJI JANG</string>
     <string name="email_subject">[주유주유소] 문의</string>
     <string name="email_fail">메일을 보낼 수 없습니다.</string>
 

@@ -67,10 +67,9 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
     }
 
     private fun makeMapTypeData() {
-        items = arrayListOf(Setting(MapType.GOOGLE.map),
-                Setting(MapType.KAKAO.map),
-                Setting(MapType.TMAP.map))
-        fetchType(PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
+        items = arrayListOf(Setting(MapType.TMAP.map),
+                Setting(MapType.KAKAO.map))
+        fetchType(PreferenceName.MAP_TYPE, MapType.TMAP.map)
     }
 
     private fun makeSortTypeData() {

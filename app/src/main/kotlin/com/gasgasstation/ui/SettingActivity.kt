@@ -1,6 +1,5 @@
 package com.gasgasstation.ui
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +11,8 @@ import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.ui.adapter.EtcAdapter
 import com.gasgasstation.ui.adapter.FindSettingAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_setting.*
 
 
@@ -27,6 +28,9 @@ class SettingActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MobileAds.initialize(this, Const.ADMOB_APP_ID)
+        adView.loadAd(AdRequest.Builder().build())
 
         val findSettings: ArrayList<String> = arrayListOf(getString(R.string.find_distance), getString(R.string.oil_type),
                 getString(R.string.gas_station_type), getString(R.string.sort_type), getString(R.string.map_type))
@@ -66,7 +70,7 @@ class SettingActivity : BaseActivity() {
         emailIntent.data = Uri.parse(mailto)
         try {
             startActivity(emailIntent)
-        } catch (e: ActivityNotFoundException) {
+        } catch (e: Exception) {
             Toast.makeText(this, R.string.email_fail, Toast.LENGTH_SHORT).show()
         }
     }
