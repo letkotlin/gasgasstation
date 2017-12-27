@@ -97,10 +97,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         tv_sort.text = presenter.getSettingData(PreferenceName.SORT_TYPE)
         tv_sort.setOnClickListener({
             if (tv_sort.text == getString(R.string.sort_distance)) {
-                presenter.sortList(SortType.PRICE)
+                presenter.sortList(SortType.DISTANCE)
                 tv_sort.text = getString(R.string.sort_price)
             } else {
-                presenter.sortList(SortType.DISTANCE)
+                presenter.sortList(SortType.PRICE)
                 tv_sort.text = getString(R.string.sort_distance)
             }
 
