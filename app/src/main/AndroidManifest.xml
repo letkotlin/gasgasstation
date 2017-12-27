@@ -13,12 +13,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>r
+            </intent-filter>
+            r
         </activity>
         <activity android:name=".ui.InitSettingActivity" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/KAKAO_API_KEY" />
+
         <activity android:name=".ui.GasStationListActivity"></activity>
         <activity android:name=".ui.SettingActivity"></activity>
         <activity android:name=".ui.SettingDetailActivity"></activity>

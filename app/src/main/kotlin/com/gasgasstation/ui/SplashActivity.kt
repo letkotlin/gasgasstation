@@ -45,8 +45,6 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         showPermission()
-        initLocationManager()
-        reqLocationUpdate()
         Log.i(Const.TAG, "keyHash = " + getKeyHash(this))
     }
 
@@ -57,6 +55,8 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                 .request()
                 .subscribe({ tedPermissionResult ->
                     if (tedPermissionResult.isGranted()) {
+                        initLocationManager()
+                        reqLocationUpdate()
                         landingInitSetting()
                     } else {
                         Toast.makeText(this, R.string.auth_denied_msg, Toast.LENGTH_SHORT).show()

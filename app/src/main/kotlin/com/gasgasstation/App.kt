@@ -1,9 +1,11 @@
 package com.gasgasstation
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.gasgasstation.api.ApiModule
 import com.gasgasstation.dagger.*
 import dagger.Component
+import io.fabric.sdk.android.Fabric
 import javax.inject.Singleton
 
 /**
@@ -20,6 +22,7 @@ class App : Application() {
                 .settingModule(SettingModule(this))
                 .build()
 
+        Fabric.with(this, Crashlytics())
     }
 
     fun appComponent() = appComponent
