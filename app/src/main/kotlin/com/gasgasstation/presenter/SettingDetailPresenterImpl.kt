@@ -19,7 +19,6 @@ class SettingDetailPresenterImpl @Inject internal constructor(private val view: 
             adapterModel.getItem(i)!!.isChecked = item?.name.equals(name)
         }
         adapterView.refresh()
-
         saveSettingData(key, name)
     }
 

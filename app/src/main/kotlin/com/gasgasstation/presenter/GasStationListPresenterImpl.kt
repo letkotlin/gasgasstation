@@ -13,6 +13,7 @@ import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
 import com.gasgasstation.model.daum.Coord2address
 import com.gasgasstation.model.daum.TransCoord
+import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.model.opinet.OPINET
 import com.gasgasstation.ui.adapter.GasStationAdapterModel
 import io.reactivex.Flowable
@@ -68,7 +69,7 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap { response -> Flowable.fromArray(response.RESULT.OIL) }
                 .flatMap { items -> Flowable.fromIterable(items) }
-                .filter { item -> (GasStationType.ALL.gasStation.equals(gasStationType) || item.POLL_DIV_CD.equals(gasStationType)) }
+                .filter { item -> (GasStationType.ALL.name == gasStationType || item.POLL_DIV_CD == gasStationType) }
                 .toList()
                 .subscribe({
                     adapterModel.setOilType(OilType.getOilName(prodcd))

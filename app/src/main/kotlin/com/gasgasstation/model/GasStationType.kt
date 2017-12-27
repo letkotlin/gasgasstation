@@ -30,6 +30,7 @@ enum class GasStationType(val gasStation: String) {
 
         fun getGasStation(gasStation: String): String =
                 when(gasStation) {
+                    ALL.gasStation -> ALL.name
                     SKE.gasStation -> SKE.name
                     GSC.gasStation -> GSC.name
                     HDO.gasStation -> HDO.name

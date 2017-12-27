@@ -84,9 +84,9 @@
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_layer"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_gas_station"
@@ -97,16 +97,14 @@
 
         </LinearLayout>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-5712365969973829/4887628599">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="ca-app-pub-5712365969973829/4887628599" />
 
     </RelativeLayout>
 

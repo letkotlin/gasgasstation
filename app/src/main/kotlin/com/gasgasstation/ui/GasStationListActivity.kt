@@ -16,16 +16,17 @@ import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
+import com.gasgasstation.constant.Const.Companion.BUS_GET_GAS_LIST
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.GasStationListModule
 import com.gasgasstation.model.Coords
 import com.gasgasstation.model.MapType
 import com.gasgasstation.model.OilType
 import com.gasgasstation.model.SortType
-import com.gasgasstation.model.opinet.GasStation
 import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
+import com.gasgasstation.util.RxBus
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.*
@@ -33,6 +34,7 @@ import com.kakao.kakaonavi.KakaoNaviParams
 import com.kakao.kakaonavi.KakaoNaviService
 import com.kakao.kakaonavi.NaviOptions
 import com.kakao.kakaonavi.options.CoordType
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_gasstation_list.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,9 +48,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @Inject lateinit var adapterView: GasStationAdapterView
     lateinit var mDatabase: DatabaseReference
     lateinit var opinetKey: List<String>
+    lateinit var currentLocation: Location
 
     val adapter by lazy {
-        GasStationAdapter(ArrayList<GasStation>(),
+        GasStationAdapter(ArrayList(),
                 OilType.B027.name,
                 { x, y, name -> landingMap(x, y, name) })
     }
@@ -105,9 +108,15 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             startActivity(intent)
         }
 
+        getOpinetKey()
         initLocationManager()
         reqLocationUpdate()
-        getOpinetKey()
+
+        RxBus.subscribe(BUS_GET_GAS_LIST, this, Consumer {
+            Log.i(Const.TAG, "BUS_GET_GAS_LIST ")
+            getGasLocation()
+        })
+
     }
 
     /*
@@ -123,19 +132,18 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
-                Log.i(Const.TAG, "setRequestCnt() p0 = " + p0?.value)
-                var requestCnt = p0?.value.toString().toInt()
-                if (requestCnt == null) {
-                    mDatabase.child("request_cnt").child(now).setValue(1)
+                Log.i(Const.TAG, "setRequestCnt() now = " + now + " p0 = " + p0?.value)
+                var requestCnt = p0?.value
+                if (requestCnt == null)
                     requestCnt = 1
-                } else {
-                    requestCnt = requestCnt++
-                    mDatabase.child("request_cnt").child(now).setValue(requestCnt)
-                }
+                else
+                    requestCnt = requestCnt.toString().toInt().plus(1)
+                mDatabase.child("request_cnt").child(now).setValue(requestCnt)
+
                 if (requestCnt / 1000 < 3) {
                     Const.OPINET_API_KEY = opinetKey[requestCnt / 1000]
                 } else
-                    Const.OPINET_API_KEY = opinetKey[3]
+                    Const.OPINET_API_KEY = opinetKey[2]
                 Log.i(Const.TAG, "Const.OPINET_API_KEY = " + Const.OPINET_API_KEY)
             }
         }
@@ -168,10 +176,8 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
-                setRequestCnt()
-                presenter.getGasStationList(location.longitude, location.latitude, Coords.WGS84.name, Coords.KTM.name)
-                presenter.getCoord2address(location.longitude, location.latitude, Coords.WGS84.name)
-                locationManager.removeUpdates(locationListener)
+                currentLocation = location
+                getGasLocation()
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
@@ -183,6 +189,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @SuppressLint("MissingPermission")
     fun reqLocationUpdate() {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+    }
+
+    fun getGasLocation() {
+        setRequestCnt()
+        presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
+        presenter.getCoord2address(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name)
     }
 
     override fun setCurrentAddress(address: String?) {
@@ -197,6 +209,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun onDestroy() {
         super.onDestroy()
+        RxBus.unregister(this)
         locationManager.removeUpdates(locationListener)
     }
 

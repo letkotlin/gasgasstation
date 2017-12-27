@@ -3,6 +3,7 @@ package com.gasgasstation.ui
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.gasgasstation.App
 import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
@@ -14,6 +15,7 @@ import com.gasgasstation.presenter.SettingDetailPresenter
 import com.gasgasstation.ui.adapter.SettingDetailAdapter
 import com.gasgasstation.ui.adapter.SettingDetailAdapterModel
 import com.gasgasstation.ui.adapter.SettingDetailAdapterView
+import com.gasgasstation.util.RxBus
 import kotlinx.android.synthetic.main.activity_setting_detail.*
 import javax.inject.Inject
 
@@ -122,6 +124,7 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
     }
 
     private fun selectItem(name: String) {
+        Log.i(Const.TAG, "selectItem name = " + name)
         when (settingType) {
             getString(R.string.find_distance) -> presenter.choiceData(PreferenceName.DISTANCE_TYPE, name)
             getString(R.string.oil_type) -> presenter.choiceData(PreferenceName.OIL_TYPE, name)
@@ -129,6 +132,7 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
             getString(R.string.sort_type) -> presenter.choiceData(PreferenceName.SORT_TYPE, name)
             getString(R.string.map_type) -> presenter.choiceData(PreferenceName.MAP_TYPE, name)
         }
+        RxBus.publish(Const.BUS_GET_GAS_LIST, true)
     }
 
     override fun refresh() {

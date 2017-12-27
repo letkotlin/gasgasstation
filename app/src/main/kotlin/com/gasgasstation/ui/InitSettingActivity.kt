@@ -34,9 +34,10 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
             Setting(OilType.B034.oil),
             Setting(OilType.C004.oil),
             Setting(OilType.K015.oil))
-    val navData: ArrayList<Setting> = arrayListOf(Setting(MapType.GOOGLE.map),
+    val navData: ArrayList<Setting> = arrayListOf(
+            Setting(MapType.TMAP.map),
             Setting(MapType.KAKAO.map),
-            Setting(MapType.TMAP.map))
+            Setting(MapType.GOOGLE.map))
 
     override fun inject() {
         (applicationContext as App)
@@ -52,7 +53,6 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fatchSettingInfo()
-
         rv_oil.layoutManager = LinearLayoutManager(this)
         rv_navi.layoutManager = LinearLayoutManager(this)
         rv_oil.adapter = oilAdapter
@@ -74,7 +74,7 @@ class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
     fun fatchSettingInfo() {
         fetchType(oilData, PreferenceName.OIL_TYPE, OilType.B027.oil)
-        fetchType(navData, PreferenceName.MAP_TYPE, MapType.GOOGLE.map)
+        fetchType(navData, PreferenceName.MAP_TYPE, MapType.TMAP.map)
     }
 
     private fun fetchType(items: ArrayList<Setting>, preferenceName: String, default: String) {

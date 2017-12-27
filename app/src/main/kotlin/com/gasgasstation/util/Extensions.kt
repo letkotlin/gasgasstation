@@ -15,7 +15,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun String.numberFormat() : String {
+fun String.numberFormat(): String {
     val df = DecimalFormat("#,###")
     df.roundingMode = RoundingMode.CEILING
     return df.format(this.toInt())
