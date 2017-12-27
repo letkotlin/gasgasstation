@@ -85,9 +85,9 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
                 .subscribe({
                     var coordDocument = it.documents?.get(0)!!
                     findAllGasStation(Const.OPINET_API_KEY, coordDocument.x, coordDocument.y,
-                            DistanceType.getDistance(getSettingData(PreferenceName.DISTANCE_TYPE)!!),
-                            SortType.getSort(getSettingData(PreferenceName.SORT_TYPE)!!),
-                            OilType.getOilType(getSettingData(PreferenceName.OIL_TYPE)!!), "json")
+                            DistanceType.getDistance(getSettingData(PreferenceName.DISTANCE_TYPE)),
+                            SortType.getSort(getSettingData(PreferenceName.SORT_TYPE)),
+                            OilType.getOilType(getSettingData(PreferenceName.OIL_TYPE)), "json")
                 }, { it.printStackTrace() })
 
     }
