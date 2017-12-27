@@ -16,6 +16,7 @@ class Const {
 
         const val SETTING_TYPE = "SETTING_TYPE"
         const val BUS_GET_GAS_LIST = "BUS_GET_GAS_LIST"
+        const val BUS_SORT_GAS_LIST = "BUS_SORT_GAS_LIST"
 
         const val DAUM_API_KEY: String = BuildConfig.DAUM_API_KEY
         var OPINET_API_KEY: String = BuildConfig.OPINET_API_KEY

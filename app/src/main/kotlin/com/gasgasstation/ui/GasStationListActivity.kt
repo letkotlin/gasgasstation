@@ -17,6 +17,7 @@ import com.gasgasstation.R
 import com.gasgasstation.base.view.BaseActivity
 import com.gasgasstation.constant.Const
 import com.gasgasstation.constant.Const.Companion.BUS_GET_GAS_LIST
+import com.gasgasstation.constant.Const.Companion.BUS_SORT_GAS_LIST
 import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.GasStationListModule
 import com.gasgasstation.model.Coords
@@ -114,9 +115,14 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         RxBus.subscribe(BUS_GET_GAS_LIST, this, Consumer {
             Log.i(Const.TAG, "BUS_GET_GAS_LIST ")
-            getGasLocation()
+            setRequestCnt()
+            presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
         })
 
+        RxBus.subscribe(BUS_SORT_GAS_LIST, this, Consumer {
+            Log.i(Const.TAG, "BUS_SORT_GAS_LIST sortType")
+            tv_sort.performClick()
+        })
     }
 
     /*
@@ -177,7 +183,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "GasStationListActivity latitude = " + location.latitude + " longitude = " + location.longitude)
                 currentLocation = location
-                getGasLocation()
+                setRequestCnt()
+                presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
+                presenter.getCoord2address(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name)
+                locationManager.removeUpdates(locationListener)
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
@@ -189,12 +198,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @SuppressLint("MissingPermission")
     fun reqLocationUpdate() {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
-    }
-
-    fun getGasLocation() {
-        setRequestCnt()
-        presenter.getGasStationList(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name, Coords.KTM.name)
-        presenter.getCoord2address(currentLocation.longitude, currentLocation.latitude, Coords.WGS84.name)
     }
 
     override fun setCurrentAddress(address: String?) {

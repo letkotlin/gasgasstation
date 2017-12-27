@@ -24,14 +24,13 @@ interface GasStationAdapterModel : AdapterModel<GasStation> {
 
 interface GasStationAdapterView : AdapterView
 
-class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList<GasStation>(),
+class GasStationAdapter(private val items: ArrayList<GasStation> = ArrayList(),
                         private var oilType: String,
                         private val onClick: (String, String, String) -> Unit) : RecyclerView.Adapter<GasStationAdapter.GasStationHolder>(), GasStationAdapterModel, GasStationAdapterView {
 
     override fun onBindViewHolder(holder: GasStationHolder?, position: Int) {
         val item = getItem(position)
         holder?.bind(item, oilType)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GasStationHolder {

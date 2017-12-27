@@ -1,5 +1,7 @@
 package com.gasgasstation.presenter
 
+import android.util.Log
+import com.gasgasstation.constant.Const
 import com.gasgasstation.dagger.PreferenceUtil
 import com.gasgasstation.model.Setting
 import com.gasgasstation.ui.adapter.SettingDetailAdapterModel
@@ -19,6 +21,7 @@ class SettingDetailPresenterImpl @Inject internal constructor(private val view: 
             adapterModel.getItem(i)!!.isChecked = item?.name.equals(name)
         }
         adapterView.refresh()
+        Log.i(Const.TAG, "choiceData key = $key, name = $name")
         saveSettingData(key, name)
     }
 

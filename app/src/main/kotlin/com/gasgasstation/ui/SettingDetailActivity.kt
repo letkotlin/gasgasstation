@@ -126,13 +126,28 @@ class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
     private fun selectItem(name: String) {
         Log.i(Const.TAG, "selectItem name = " + name)
         when (settingType) {
-            getString(R.string.find_distance) -> presenter.choiceData(PreferenceName.DISTANCE_TYPE, name)
-            getString(R.string.oil_type) -> presenter.choiceData(PreferenceName.OIL_TYPE, name)
-            getString(R.string.gas_station_type) -> presenter.choiceData(PreferenceName.GAS_STATION_TYPE, name)
-            getString(R.string.sort_type) -> presenter.choiceData(PreferenceName.SORT_TYPE, name)
-            getString(R.string.map_type) -> presenter.choiceData(PreferenceName.MAP_TYPE, name)
+            getString(R.string.find_distance) -> {
+                presenter.choiceData(PreferenceName.DISTANCE_TYPE, name)
+                RxBus.publish(Const.BUS_GET_GAS_LIST, true)
+            }
+            getString(R.string.oil_type) -> {
+                presenter.choiceData(PreferenceName.OIL_TYPE, name)
+                RxBus.publish(Const.BUS_GET_GAS_LIST, true)
+            }
+            getString(R.string.gas_station_type) -> {
+                presenter.choiceData(PreferenceName.GAS_STATION_TYPE, name)
+                RxBus.publish(Const.BUS_GET_GAS_LIST, true)
+            }
+            getString(R.string.map_type) -> {
+                presenter.choiceData(PreferenceName.MAP_TYPE, name)
+                RxBus.publish(Const.BUS_GET_GAS_LIST, true)
+            }
+            getString(R.string.sort_type) -> {
+                presenter.choiceData(PreferenceName.SORT_TYPE, name)
+                RxBus.publish(Const.BUS_SORT_GAS_LIST, true)
+            }
         }
-        RxBus.publish(Const.BUS_GET_GAS_LIST, true)
+
     }
 
     override fun refresh() {
