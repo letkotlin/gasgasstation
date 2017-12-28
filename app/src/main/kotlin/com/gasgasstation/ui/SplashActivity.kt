@@ -48,14 +48,13 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
         Log.i(Const.TAG, "keyHash = " + getKeyHash(this))
     }
 
-    fun showPermission() {
+    private fun showPermission() {
         TedRx2Permission.with(this)
                 .setRationaleMessage(R.string.auth_rationale_msg)
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .request()
                 .subscribe({ tedPermissionResult ->
-                    if (tedPermissionResult.isGranted()) {
-                        initLocationManager()
+                    if (tedPermissionResult.isGranted) {
                         reqLocationUpdate()
                         landingInitSetting()
                     } else {
@@ -65,7 +64,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                 })
     }
 
-    fun landingInitSetting() {
+    private fun landingInitSetting() {
         Flowable.timer(2, TimeUnit.SECONDS)
                 .subscribe({
                     var intent: Intent
@@ -79,8 +78,8 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
     }
 
     @SuppressLint("MissingPermission")
-    fun initLocationManager() {
-        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private fun reqLocationUpdate() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.i(Const.TAG, "SplashActivity latitude = " + location.latitude + " longitude = " + location.longitude)
@@ -93,11 +92,9 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
             override fun onProviderEnabled(provider: String) {}
             override fun onProviderDisabled(provider: String) {}
         }
-    }
 
-    @SuppressLint("MissingPermission")
-    fun reqLocationUpdate() {
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0f, locationListener)
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
     }
 
 }

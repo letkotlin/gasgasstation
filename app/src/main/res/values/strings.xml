@@ -42,5 +42,8 @@
     <string name="supporter_name">YEONJI JANG</string>
     <string name="email_subject">[주유주유소] 문의</string>
     <string name="email_fail">메일을 보낼 수 없습니다.</string>
+    <string name="location_setting_title">위치 서비스</string>
+    <string name="location_setting_message">주유소 검색을 위해 위치 서비스를 켜야 합니다.</string>
+    <string name="location_setting">설정</string>
 
 </resources>

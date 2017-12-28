@@ -1,9 +1,12 @@
 package com.gasgasstation.ui
 
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.Toast
@@ -42,6 +45,9 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     @Inject lateinit internal var presenter: GasStationListPresenter
     @Inject lateinit var adapterView: GasStationAdapterView
     lateinit var mDatabase: DatabaseReference
+    lateinit var locationDialog: AlertDialog
+
+    private val REQ_CODE_LOCATION = 1515
 
     val adapter by lazy {
         GasStationAdapter(ArrayList(),
@@ -70,10 +76,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkGPS()
         mDatabase = FirebaseDatabase.getInstance().reference;
 
         getOpinetKey()
-
         Flowable.interval(1, TimeUnit.SECONDS)
                 .takeWhile { GeoCode.latitude == null }
                 .doOnComplete {
@@ -129,6 +135,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
      3. 개수 / 1000으로 하여 조회할 때 사용할 key를 셋팅합니다.
      */
     private fun reqGasList() {
+        if (!checkGPS()) {
+            if (swipe_layer.isRefreshing)
+                swipe_layer.isRefreshing = false
+            return
+        }
+
         val now = getTodayDate()
         var eventListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -214,4 +226,53 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         KakaoNaviService.shareDestination(this, builder.build())
     }
 
+
+    private fun checkGPS(): Boolean {
+        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val gpsProvider = LocationManager.GPS_PROVIDER
+        val networkProvider = LocationManager.NETWORK_PROVIDER
+
+        return if (locationManager.isProviderEnabled(gpsProvider) && locationManager.isProviderEnabled(networkProvider)) {
+            true
+        } else {
+            locationDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                    .setTitle(R.string.location_setting_title)
+                    .setMessage(R.string.location_setting_message)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.location_setting, { dialog, _ ->
+                        dismissLocationDialog()
+                        startActivityForResult(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQ_CODE_LOCATION)
+                    })
+                    .setNegativeButton(R.string.close, { dialog, _ ->
+                        dismissLocationDialog()
+                    }).create()
+
+            showLocationDialog()
+            false
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQ_CODE_LOCATION) {
+            checkGPS()
+        }
+    }
+
+    private fun dismissLocationDialog() {
+        try {
+            locationDialog.dismiss()
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun showLocationDialog() {
+        try {
+            if (!locationDialog.isShowing)
+                locationDialog.show()
+        } catch (e: Exception) {
+        }
+    }
+
 }
+
