@@ -2,12 +2,16 @@ package com.gasgasstation.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
 import com.gasgasstation.App
@@ -18,6 +22,7 @@ import com.gasgasstation.constant.PreferenceName
 import com.gasgasstation.dagger.SplashModule
 import com.gasgasstation.model.GeoCode
 import com.gasgasstation.presenter.SplashPresenter
+import com.google.firebase.database.*
 import com.kakao.util.helper.Utility.getKeyHash
 import com.tedpark.tedpermission.rx2.TedRx2Permission
 import io.reactivex.Flowable
@@ -30,6 +35,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
     @Inject lateinit internal var presenter: SplashPresenter
     lateinit var locationManager: LocationManager
     lateinit var locationListener: LocationListener
+    lateinit var mDatabase: DatabaseReference
 
     override fun inject() {
         (applicationContext as App)
@@ -44,7 +50,8 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showPermission()
+        mDatabase = FirebaseDatabase.getInstance().reference;
+        checkVer()
         Log.i(Const.TAG, "keyHash = " + getKeyHash(this))
     }
 
@@ -62,6 +69,23 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                         showPermission()
                     }
                 })
+    }
+
+    private fun checkVer() {
+        var eventListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                Log.i(Const.TAG, "checkVer() p0 = " + p0?.value)
+                if (p0?.value == getCurrentVersion()) {
+                    showPermission()
+                } else {
+                    landingUpdateMarket()
+                }
+            }
+        }
+        mDatabase.child("version").addListenerForSingleValueEvent(eventListener)
     }
 
     private fun landingInitSetting() {
@@ -92,9 +116,42 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
             override fun onProviderEnabled(provider: String) {}
             override fun onProviderDisabled(provider: String) {}
         }
-
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
     }
 
+    private fun getCurrentVersion(): String {
+        var ver = ""
+        return try {
+            ver = applicationContext.packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA).versionName
+            Log.i(Const.TAG, "getCurrentVersion ver = " + ver)
+            ver
+        } catch (e: PackageManager.NameNotFoundException) {
+            ver
+        }
+
+    }
+
+    private fun landingUpdateMarket() {
+        try {
+            AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                    .setMessage(R.string.alert_new_version)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.update, { dialog, _ ->
+                        dialog.dismiss()
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
+                        finish()
+                    })
+                    .setNegativeButton(R.string.close, { dialog, _ ->
+                        dialog.dismiss()
+                        finish()
+                    }).show()
+
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, R.string.alert_empty_market_message, Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, R.string.alert_fail_connect_market, Toast.LENGTH_SHORT).show()
+        }
+
+    }
 }

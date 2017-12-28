@@ -45,5 +45,9 @@
     <string name="location_setting_title">위치 서비스</string>
     <string name="location_setting_message">주유소 검색을 위해 위치 서비스를 켜야 합니다.</string>
     <string name="location_setting">설정</string>
+    <string name="update">업데이트</string>
+    <string name="alert_new_version">새로운 버전이 등록되었습니다.\n지금 바로 업데이트해주세요!</string>
+    <string name="alert_empty_market_message">마켓이 설치되지 않았습니다.</string>
+    <string name="alert_fail_connect_market">마켓 연결에 실패하였습니다.\n잠시 후 다시 시도해주세요.</string>
 
 </resources>
