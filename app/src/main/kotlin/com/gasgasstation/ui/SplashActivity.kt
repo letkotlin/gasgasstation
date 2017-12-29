@@ -78,10 +78,11 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
 
             override fun onDataChange(p0: DataSnapshot?) {
                 Log.i(Const.TAG, "checkVer() p0 = " + p0?.value)
-                if (p0?.value == getCurrentVersion()) {
-                    showPermission()
-                } else {
+                var playVersion = p0?.value.toString().replace(".", "").toInt()
+                if (playVersion > getCurrentVersion()) {
                     landingUpdateMarket()
+                } else {
+                    showPermission()
                 }
             }
         }
@@ -120,10 +121,10 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
     }
 
-    private fun getCurrentVersion(): String {
-        var ver = ""
+    private fun getCurrentVersion(): Int {
+        var ver = 0
         return try {
-            ver = applicationContext.packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA).versionName
+            ver = applicationContext.packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA).versionName.replace(".", "").toInt()
             Log.i(Const.TAG, "getCurrentVersion ver = " + ver)
             ver
         } catch (e: PackageManager.NameNotFoundException) {

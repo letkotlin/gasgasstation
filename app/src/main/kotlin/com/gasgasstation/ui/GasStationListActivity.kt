@@ -81,7 +81,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         getOpinetKey()
         Flowable.interval(1, TimeUnit.SECONDS)
-                .takeWhile { GeoCode.latitude == null }
+                .takeWhile { GeoCode.latitude == null || GeoCode.longitude == null }
                 .doOnComplete {
                     reqGasList()
                     presenter.getCoord2address(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name)
@@ -109,7 +109,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                 presenter.sortList(SortType.PRICE)
                 tv_sort.text = getString(R.string.sort_distance)
             }
-
         })
 
         tv_setting.setOnClickListener {
@@ -136,8 +135,13 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
      */
     private fun reqGasList() {
         if (!checkGPS()) {
-            if (swipe_layer.isRefreshing)
-                swipe_layer.isRefreshing = false
+            if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
+            return
+        }
+
+        if (GeoCode.latitude == null || GeoCode.longitude == null) {
+            Toast.makeText(this, R.string.can_not_find_location, Toast.LENGTH_SHORT).show()
+            if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
             return
         }
 
@@ -192,8 +196,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun refresh() {
         adapterView.refresh()
-        if (swipe_layer.isRefreshing)
-            swipe_layer.isRefreshing = false
+        if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
     }
 
     override fun onDestroy() {
@@ -232,7 +235,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val gpsProvider = LocationManager.GPS_PROVIDER
         val networkProvider = LocationManager.NETWORK_PROVIDER
 
-        return if (locationManager.isProviderEnabled(gpsProvider) && locationManager.isProviderEnabled(networkProvider)) {
+        return if (locationManager.isProviderEnabled(gpsProvider) || locationManager.isProviderEnabled(networkProvider)) {
             true
         } else {
             runOnUiThread {
