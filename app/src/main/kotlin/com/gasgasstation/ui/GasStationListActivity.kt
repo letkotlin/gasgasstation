@@ -235,18 +235,19 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         return if (locationManager.isProviderEnabled(gpsProvider) && locationManager.isProviderEnabled(networkProvider)) {
             true
         } else {
-            locationDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                    .setTitle(R.string.location_setting_title)
-                    .setMessage(R.string.location_setting_message)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.location_setting, { dialog, _ ->
-                        dismissLocationDialog()
-                        startActivityForResult(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQ_CODE_LOCATION)
-                    })
-                    .setNegativeButton(R.string.close, { dialog, _ ->
-                        dismissLocationDialog()
-                    }).create()
-
+            runOnUiThread {
+                locationDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                        .setTitle(R.string.location_setting_title)
+                        .setMessage(R.string.location_setting_message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.location_setting, { dialog, _ ->
+                            dismissLocationDialog()
+                            startActivityForResult(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQ_CODE_LOCATION)
+                        })
+                        .setNegativeButton(R.string.close, { dialog, _ ->
+                            dismissLocationDialog()
+                        }).create()
+            }
             showLocationDialog()
             false
         }
@@ -269,7 +270,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     private fun showLocationDialog() {
         try {
             if (!locationDialog.isShowing)
-                runOnUiThread { locationDialog.show() }
+                locationDialog.show()
         } catch (e: Exception) {
         }
     }
