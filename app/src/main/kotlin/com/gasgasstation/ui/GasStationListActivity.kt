@@ -269,7 +269,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     private fun showLocationDialog() {
         try {
             if (!locationDialog.isShowing)
-                locationDialog.show()
+                runOnUiThread { locationDialog.show() }
         } catch (e: Exception) {
         }
     }
