@@ -1,5 +1,6 @@
 package com.gasgasstation.ui
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -127,24 +128,21 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         })
     }
 
-    /*
-     오늘 날짜의 총 조회 건수를 조회합니다.
-     1. 오늘 날짜의 조회 건수가 없다면 기존 데이터를 모두 삭제 후 오늘 날짜 값으로 1셋팅합니다.
-     2. 오늘 날짜의 조회 건수가 있다면 현재 개수 + 1 해줍니다.
-     3. 개수 / 1000으로 하여 조회할 때 사용할 key를 셋팅합니다.
-     */
     private fun reqGasList() {
-        if (!checkGPS()) {
-            if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
-            return
-        }
 
         if (GeoCode.latitude == null || GeoCode.longitude == null) {
-            Toast.makeText(this, R.string.can_not_find_location, Toast.LENGTH_SHORT).show()
             if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
+            Toast.makeText(this, R.string.can_not_find_location, Toast.LENGTH_SHORT).show()
+            checkGPS()
             return
         }
 
+        /*
+         오늘 날짜의 총 조회 건수를 조회합니다.
+         1. 오늘 날짜의 조회 건수가 없다면 기존 데이터를 모두 삭제 후 오늘 날짜 값으로 1셋팅합니다.
+         2. 오늘 날짜의 조회 건수가 있다면 현재 개수 + 1 해줍니다.
+         3. 개수 / 1000으로 하여 조회할 때 사용할 key를 셋팅합니다.
+         */
         val now = getTodayDate()
         var eventListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -230,14 +228,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
     }
 
 
-    private fun checkGPS(): Boolean {
+    private fun checkGPS() {
         var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val gpsProvider = LocationManager.GPS_PROVIDER
         val networkProvider = LocationManager.NETWORK_PROVIDER
 
-        return if (locationManager.isProviderEnabled(gpsProvider) || locationManager.isProviderEnabled(networkProvider)) {
-            true
-        } else {
+        if (!locationManager.isProviderEnabled(gpsProvider) && locationManager.isProviderEnabled(networkProvider)) {
             runOnUiThread {
                 locationDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
                         .setTitle(R.string.location_setting_title)
@@ -252,7 +248,6 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                         }).create()
             }
             showLocationDialog()
-            false
         }
     }
 
