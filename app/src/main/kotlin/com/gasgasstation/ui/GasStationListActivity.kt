@@ -1,6 +1,5 @@
 package com.gasgasstation.ui
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -77,10 +76,10 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkGPS()
         mDatabase = FirebaseDatabase.getInstance().reference;
-
         getOpinetKey()
+        reqGasList()
+
         Flowable.interval(1, TimeUnit.SECONDS)
                 .takeWhile { GeoCode.latitude == null || GeoCode.longitude == null }
                 .doOnComplete {
@@ -132,10 +131,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
         if (GeoCode.latitude == null || GeoCode.longitude == null) {
             if (swipe_layer.isRefreshing) swipe_layer.isRefreshing = false
-            Toast.makeText(this, R.string.can_not_find_location, Toast.LENGTH_SHORT).show()
             checkGPS()
             return
         }
+
+        if (OpinetKey.keys.isEmpty())
+            getOpinetKey()
 
         /*
          오늘 날짜의 총 조회 건수를 조회합니다.
@@ -233,7 +234,9 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val gpsProvider = LocationManager.GPS_PROVIDER
         val networkProvider = LocationManager.NETWORK_PROVIDER
 
-        if (!locationManager.isProviderEnabled(gpsProvider) && locationManager.isProviderEnabled(networkProvider)) {
+        if (locationManager.isProviderEnabled(gpsProvider) || locationManager.isProviderEnabled(networkProvider)) {
+            runOnUiThread { Toast.makeText(this, R.string.loading_location, Toast.LENGTH_SHORT).show() }
+        } else {
             runOnUiThread {
                 locationDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
                         .setTitle(R.string.location_setting_title)
