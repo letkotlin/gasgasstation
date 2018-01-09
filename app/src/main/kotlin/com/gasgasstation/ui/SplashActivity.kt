@@ -86,7 +86,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                 }
             }
         }
-        mDatabase.child("version").addListenerForSingleValueEvent(eventListener)
+        mDatabase.child("versions").child("android").addListenerForSingleValueEvent(eventListener)
     }
 
     private fun landingInitSetting() {
