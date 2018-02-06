@@ -51,5 +51,6 @@
     <string name="alert_fail_connect_market">마켓 연결에 실패하였습니다.\n잠시 후 다시 시도해주세요.</string>
     <string name="can_not_find_location">위치 정보 가져오기에 실패하였습니다.</string>
     <string name="loading_location">위치 정보 로딩중...</string>
+    <string name="admob_key">ca-app-pub-5712365969973829/1769662341</string>
 
 </resources>

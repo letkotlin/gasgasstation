@@ -87,7 +87,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                     presenter.getCoord2address(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name)
                 }.subscribe()
 
-        MobileAds.initialize(this, Const.ADMOB_APP_ID)
+        MobileAds.initialize(this, getString(R.string.admob_key))
         adView.loadAd(AdRequest.Builder().build())
 
         rv_gas_station.layoutManager = LinearLayoutManager(this)
