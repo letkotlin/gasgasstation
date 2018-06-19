@@ -15,7 +15,7 @@ ext {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.gasgasstation"
@@ -85,13 +85,13 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:1.0.2"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-annotations-jvm:$kotlin_version"
 
     // Dagger 2.0
     implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    provided 'javax.annotation:jsr250-api:1.0'
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
     // retrofit
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -106,13 +106,14 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaAndroid"
 
     // 권한요청 tedPermission
-    compile 'gun0912.ted:tedpermission-rx2:2.1.0'
+    implementation 'gun0912.ted:tedpermission-rx2:2.1.0'
 
     implementation group: "com.kakao.sdk", name: "kakaonavi", version: "1.7.0"
-    implementation "com.google.firebase:firebase-ads:11.8.0"
-    implementation "com.google.firebase:firebase-database:11.8.0"
+//    implementation "com.google.firebase:firebase-ads:15.0.1"
+//    implementation "com.google.firebase:firebase-database:15.0.1"
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.0-SNAPSHOT@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }
 }
