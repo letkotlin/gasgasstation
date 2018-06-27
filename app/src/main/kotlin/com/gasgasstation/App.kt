@@ -6,7 +6,6 @@ import com.gasgasstation.api.ApiModule
 import com.gasgasstation.dagger.*
 import dagger.Component
 import io.fabric.sdk.android.Fabric
-import javax.inject.Singleton
 
 /**
  * Created by kws on 2017. 11. 22..
@@ -29,8 +28,7 @@ class App : Application() {
 
 }
 
-@Component(modules = arrayOf(ApiModule::class, SettingModule::class))
-@Singleton
+@Component(modules = [(ApiModule::class), (SettingModule::class)])
 interface AppComponent {
     fun inject(app: App)
     fun splashComponent(splashModule: SplashModule): SplashComponent

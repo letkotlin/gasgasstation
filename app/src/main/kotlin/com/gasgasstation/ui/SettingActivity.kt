@@ -41,7 +41,7 @@ class SettingActivity : BaseActivity() {
         findSettingAdapter.refresh()
 
         val etcs: ArrayList<String> = arrayListOf(getString(R.string.maker), getString(R.string.reporting), getString(R.string.review_write))
-        val etcAdapter = EtcAdapter(etcs, { key -> landingEtc(key) })
+        val etcAdapter = EtcAdapter(etcs) { key -> landingEtc(key) }
         rv_etc.layoutManager = LinearLayoutManager(this)
         rv_etc.adapter = etcAdapter
         rv_etc.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayoutManager(this).orientation))

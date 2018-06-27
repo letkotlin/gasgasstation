@@ -102,4 +102,8 @@ class GasStationListPresenterImpl @Inject internal constructor(private val view:
     }
 
     override fun getSettingData(key: String): String = preference.getString(key, "")
+
+    override fun saveSettingData(key: String, value: String) {
+        preference.put(key, value)
+    }
 }

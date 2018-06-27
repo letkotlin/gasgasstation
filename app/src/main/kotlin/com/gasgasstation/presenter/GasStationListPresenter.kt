@@ -17,6 +17,8 @@ interface GasStationListPresenter {
 
     fun getCoord2address(x: Double, y: Double, inputCoord: String)
 
+    fun saveSettingData(key: String, value: String)
+
     fun getSettingData(key: String): String
 
     fun sortList(sortType: SortType)

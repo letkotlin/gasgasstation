@@ -32,7 +32,8 @@ import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashPresenter.View {
 
-    @Inject lateinit internal var presenter: SplashPresenter
+    @Inject
+    internal lateinit var presenter: SplashPresenter
     lateinit var locationManager: LocationManager
     lateinit var locationListener: LocationListener
     lateinit var mDatabase: DatabaseReference
@@ -60,7 +61,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                 .setRationaleMessage(R.string.auth_rationale_msg)
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .request()
-                .subscribe({ tedPermissionResult ->
+                .subscribe { tedPermissionResult ->
                     if (tedPermissionResult.isGranted) {
                         reqLocationUpdate()
                         landingInitSetting()
@@ -68,17 +69,17 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                         Toast.makeText(this, R.string.auth_denied_msg, Toast.LENGTH_SHORT).show()
                         showPermission()
                     }
-                })
+                }
     }
 
     private fun checkVer() {
         var eventListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
+            override fun onCancelled(p0: DatabaseError) {
             }
 
-            override fun onDataChange(p0: DataSnapshot?) {
-                Log.i(Const.TAG, "checkVer() p0 = " + p0?.value)
-                var playVersion = p0?.value.toString().replace(".", "").toInt()
+            override fun onDataChange(p0: DataSnapshot) {
+                Log.i(Const.TAG, "checkVer() p0 = " + p0.value)
+                var playVersion = p0.value.toString().replace(".", "").toInt()
                 if (playVersion > getCurrentVersion()) {
                     landingUpdateMarket()
                 } else {
@@ -91,7 +92,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
 
     private fun landingInitSetting() {
         Flowable.timer(2, TimeUnit.SECONDS)
-                .subscribe({
+                .subscribe {
                     var intent: Intent
                     if (presenter.getSettingData(PreferenceName.OIL_TYPE).isEmpty())
                         intent = Intent(this, InitSettingActivity::class.java)
@@ -99,7 +100,7 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
                         intent = Intent(this, GasStationListActivity::class.java)
                     startActivity(intent)
                     finish()
-                })
+                }
     }
 
     @SuppressLint("MissingPermission")
@@ -138,15 +139,15 @@ class SplashActivity : BaseActivity(), SplashPresenter.View {
             AlertDialog.Builder(this, R.style.AlertDialogTheme)
                     .setMessage(R.string.alert_new_version)
                     .setCancelable(false)
-                    .setPositiveButton(R.string.update, { dialog, _ ->
+                    .setPositiveButton(R.string.update) { dialog, _ ->
                         dialog.dismiss()
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
                         finish()
-                    })
-                    .setNegativeButton(R.string.close, { dialog, _ ->
+                    }
+                    .setNegativeButton(R.string.close) { dialog, _ ->
                         dialog.dismiss()
                         finish()
-                    }).show()
+                    }.show()
 
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, R.string.alert_empty_market_message, Toast.LENGTH_SHORT).show()

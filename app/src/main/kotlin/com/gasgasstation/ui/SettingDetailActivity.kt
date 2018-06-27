@@ -22,9 +22,12 @@ import javax.inject.Inject
 
 class SettingDetailActivity : BaseActivity(), SettingDetailPresenter.View {
 
-    @Inject lateinit internal var presenter: SettingDetailPresenter
-    @Inject lateinit var adapterView: SettingDetailAdapterView
-    @Inject lateinit var adapterModel: SettingDetailAdapterModel
+    @Inject
+    lateinit internal var presenter: SettingDetailPresenter
+    @Inject
+    lateinit var adapterView: SettingDetailAdapterView
+    @Inject
+    lateinit var adapterModel: SettingDetailAdapterModel
 
     lateinit var settingType: String
     var items: ArrayList<Setting> = ArrayList()

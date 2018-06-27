@@ -42,17 +42,18 @@ import kotlin.collections.ArrayList
 
 class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
-    @Inject lateinit internal var presenter: GasStationListPresenter
-    @Inject lateinit var adapterView: GasStationAdapterView
+    @Inject
+    internal lateinit var presenter: GasStationListPresenter
+    @Inject
+    lateinit var adapterView: GasStationAdapterView
     lateinit var mDatabase: DatabaseReference
-    lateinit var locationDialog: AlertDialog
+    private lateinit var locationDialog: AlertDialog
+    private lateinit var noticeDialog: AlertDialog
 
     private val REQ_CODE_LOCATION = 1515
 
     val adapter by lazy {
-        GasStationAdapter(ArrayList(),
-                OilType.B027.name,
-                { x, y, name -> landingMap(x, y, name) })
+        GasStationAdapter(ArrayList(), OilType.B027.name) { x, y, name -> landingMap(x, y, name) }
     }
 
     private fun landingMap(x: String, y: String, name: String) {
@@ -79,7 +80,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         mDatabase = FirebaseDatabase.getInstance().reference;
         getOpinetKey()
         reqGasList()
-
+        showNotice()
         Flowable.interval(1, TimeUnit.SECONDS)
                 .takeWhile { GeoCode.latitude == null || GeoCode.longitude == null }
                 .doOnComplete {
@@ -101,15 +102,17 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
         val sortText = presenter.getSettingData(PreferenceName.SORT_TYPE)
         Log.i(Const.TAG, "sortText = " + sortText)
         tv_sort.text = if (sortText == getString(R.string.sort_distance)) getString(R.string.sort_price) else getString(R.string.sort_distance)
-        tv_sort.setOnClickListener({
+        tv_sort.setOnClickListener {
             if (tv_sort.text == getString(R.string.sort_distance)) {
+                presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.DISTANCE.sortType)
                 presenter.sortList(SortType.DISTANCE)
                 tv_sort.text = getString(R.string.sort_price)
             } else {
+                presenter.saveSettingData(PreferenceName.SORT_TYPE, SortType.PRICE.sortType)
                 presenter.sortList(SortType.PRICE)
                 tv_sort.text = getString(R.string.sort_distance)
             }
-        })
+        }
 
         tv_setting.setOnClickListener {
             var intent = Intent(this, SettingActivity::class.java)
@@ -125,6 +128,33 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
             Log.i(Const.TAG, "BUS_SORT_GAS_LIST sortType")
             tv_sort.performClick()
         })
+    }
+
+    private fun showNotice() {
+        var eventListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                Log.i(Const.TAG, "showNotice() DataSnapshot = " + p0.value)
+                if (p0.exists()) {
+                    showNoticeDialog(p0.value.toString())
+                }
+            }
+        }
+        mDatabase.child("notice").addListenerForSingleValueEvent(eventListener)
+    }
+
+    private fun showNoticeDialog(msg: String) {
+        noticeDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                .setTitle(R.string.location_setting_title)
+                .setMessage(msg)
+                .setCancelable(true)
+                .setPositiveButton(R.string.close) { _, _ ->
+                    dismissLocationDialog()
+                }.create()
+        noticeDialog.show()
     }
 
     private fun reqGasList() {
@@ -146,12 +176,12 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
          */
         val now = getTodayDate()
         var eventListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
+            override fun onCancelled(p0: DatabaseError) {
             }
 
-            override fun onDataChange(p0: DataSnapshot?) {
-                Log.i(Const.TAG, "setRequestCnt() now = " + now + " p0 = " + p0?.value)
-                var requestCnt = p0?.value
+            override fun onDataChange(p0: DataSnapshot) {
+                Log.i(Const.TAG, "setRequestCnt() now = " + now + " p0 = " + p0.value)
+                var requestCnt = p0.value
                 requestCnt = if (requestCnt == null)
                     1
                 else
@@ -171,13 +201,13 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
 
     private fun getOpinetKey() {
         var eventListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
+            override fun onCancelled(p0: DatabaseError) {
             }
 
-            override fun onDataChange(p0: DataSnapshot?) {
+            override fun onDataChange(p0: DataSnapshot) {
                 //@TODO DataSnapshot to array 방법이 없나?
-                Log.i(Const.TAG, "getOpinetKey() p0 = " + p0?.value)
-                OpinetKey.keys = p0?.value.toString().replace("[", "").replace("]", "").split(",")
+                Log.i(Const.TAG, "getOpinetKey() p0 = " + p0.value)
+                OpinetKey.keys = p0.value.toString().replace("[", "").replace("]", "").split(",")
             }
         }
         mDatabase.child("keys").addListenerForSingleValueEvent(eventListener)
@@ -242,13 +272,13 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                         .setTitle(R.string.location_setting_title)
                         .setMessage(R.string.location_setting_message)
                         .setCancelable(false)
-                        .setPositiveButton(R.string.location_setting, { dialog, _ ->
+                        .setPositiveButton(R.string.location_setting) { _, _ ->
                             dismissLocationDialog()
                             startActivityForResult(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQ_CODE_LOCATION)
-                        })
-                        .setNegativeButton(R.string.close, { dialog, _ ->
+                        }
+                        .setNegativeButton(R.string.close) { _, _ ->
                             dismissLocationDialog()
-                        }).create()
+                        }.create()
             }
             showLocationDialog()
         }

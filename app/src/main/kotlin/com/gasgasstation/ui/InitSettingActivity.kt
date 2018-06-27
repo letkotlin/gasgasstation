@@ -22,12 +22,15 @@ import javax.inject.Inject
 
 class InitSettingActivity : BaseActivity(), InitSettingPresenter.View {
 
-    @Inject lateinit internal var presenter: InitSettingPresenter
-    @Inject lateinit var oilAdapterView: OilAdapterView
-    @Inject lateinit var navAdapterView: NavAdapterView
+    @Inject
+    lateinit internal var presenter: InitSettingPresenter
+    @Inject
+    lateinit var oilAdapterView: OilAdapterView
+    @Inject
+    lateinit var navAdapterView: NavAdapterView
 
-    val oilAdapter by lazy { OilAdapter(oilData, { key, value -> presenter.choiceData(key, value) }) }
-    val navAdapter by lazy { NavAdapter(navData, { key, value -> presenter.choiceData(key, value) }) }
+    val oilAdapter by lazy { OilAdapter(oilData) { key, value -> presenter.choiceData(key, value) } }
+    val navAdapter by lazy { NavAdapter(navData) { key, value -> presenter.choiceData(key, value) } }
 
     val oilData: ArrayList<Setting> = arrayListOf(Setting(OilType.B027.oil),
             Setting(OilType.D047.oil),
