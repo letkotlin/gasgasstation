@@ -86,10 +86,10 @@
                 android:id="@+id/swipe_layer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="10dp">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_gas_station"
@@ -102,12 +102,13 @@
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/ADMOB_APP_ID"/>
+            android:visibility="gone"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/ADMOB_APP_ID" />
 
     </RelativeLayout>
 

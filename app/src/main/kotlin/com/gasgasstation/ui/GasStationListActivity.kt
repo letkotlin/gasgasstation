@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.gasgasstation.App
 import com.gasgasstation.R
@@ -23,6 +24,7 @@ import com.gasgasstation.presenter.GasStationListPresenter
 import com.gasgasstation.ui.adapter.GasStationAdapter
 import com.gasgasstation.ui.adapter.GasStationAdapterView
 import com.gasgasstation.util.RxBus
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.*
@@ -89,6 +91,18 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                 }.subscribe()
 
         MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID))
+        adView.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                Log.i(Const.TAG, "onAdFailedToLoad() errorCode = " + p0)
+                adView.visibility = View.GONE
+            }
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                adView.visibility = View.VISIBLE
+            }
+        }
         adView.loadAd(AdRequest.Builder().build())
 
         rv_gas_station.layoutManager = LinearLayoutManager(this)

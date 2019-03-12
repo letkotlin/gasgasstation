@@ -40,7 +40,7 @@ class SettingActivity : BaseActivity() {
         rv_find_setting.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayoutManager(this).orientation))
         findSettingAdapter.refresh()
 
-        val etcs: ArrayList<String> = arrayListOf(getString(R.string.maker), getString(R.string.reporting), getString(R.string.review_write))
+        val etcs: ArrayList<String> = arrayListOf(getString(R.string.maker), getString(R.string.private_policy), getString(R.string.reporting), getString(R.string.review_write))
         val etcAdapter = EtcAdapter(etcs) { key -> landingEtc(key) }
         rv_etc.layoutManager = LinearLayoutManager(this)
         rv_etc.adapter = etcAdapter
@@ -57,9 +57,14 @@ class SettingActivity : BaseActivity() {
     private fun landingEtc(name: String) {
         when (name) {
             getString(R.string.maker) -> startActivity(Intent(this, MakerActivity::class.java))
+            getString(R.string.private_policy) -> landingPrivatePolicy()
             getString(R.string.reporting) -> landingEmail()
             getString(R.string.review_write) -> landingMarket()
         }
+    }
+
+    private fun landingPrivatePolicy() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://moveattack.tistory.com/entry/Gasgasstation-Private-Policy")))
     }
 
     private fun landingEmail() {
@@ -82,6 +87,6 @@ class SettingActivity : BaseActivity() {
         } catch (anfe: android.content.ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)))
         }
-
     }
+
 }

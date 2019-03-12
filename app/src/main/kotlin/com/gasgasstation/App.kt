@@ -21,7 +21,7 @@ class App : Application() {
                 .settingModule(SettingModule(this))
                 .build()
 
-        Fabric.with(this, Crashlytics())
+//        Fabric.with(this, Crashlytics())
     }
 
     fun appComponent() = appComponent
