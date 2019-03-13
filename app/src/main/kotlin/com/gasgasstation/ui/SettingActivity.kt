@@ -29,7 +29,7 @@ class SettingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID))
+        MobileAds.initialize(this, getString(R.string.ADMOB_AD_ID))
         adView.loadAd(AdRequest.Builder().build())
 
         val findSettings: ArrayList<String> = arrayListOf(getString(R.string.find_distance), getString(R.string.oil_type),

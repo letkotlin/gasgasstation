@@ -90,7 +90,7 @@ class GasStationListActivity : BaseActivity(), GasStationListPresenter.View {
                     presenter.getCoord2address(GeoCode.longitude!!, GeoCode.latitude!!, Coords.WGS84.name)
                 }.subscribe()
 
-        MobileAds.initialize(this, getString(R.string.ADMOB_APP_ID))
+        MobileAds.initialize(this, getString(R.string.ADMOB_AD_ID))
         adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(p0: Int) {
                 super.onAdFailedToLoad(p0)

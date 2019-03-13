@@ -20,8 +20,8 @@ android {
         applicationId "com.gasgasstation"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 14
-        versionName "1.1.3"
+        versionCode 15
+        versionName "1.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -52,16 +52,20 @@ android {
             debuggable true
             buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
             buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
+            buildConfigField "String", "ADMOB_AD_ID", "\"${rootProject.getProperties().get("admob.adId")}\""
             buildConfigField "String", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
             resValue "string", "KAKAO_API_KEY", "\"${rootProject.getProperties().get("kakao.apikey")}\""
+            resValue "string", "ADMOB_AD_ID", "\"${rootProject.getProperties().get("admob.adId")}\""
             resValue "string", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
         }
 
         release {
             buildConfigField "String", "DAUM_API_KEY", "\"${rootProject.getProperties().get("daum.apikey")}\""
             buildConfigField "String", "OPINET_API_KEY", "\"${rootProject.getProperties().get("opinet.apikey")}\""
+            buildConfigField "String", "ADMOB_AD_ID", "\"${rootProject.getProperties().get("admob.adId")}\""
             buildConfigField "String", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
             resValue "string", "KAKAO_API_KEY", "\"${rootProject.getProperties().get("kakao.apikey")}\""
+            resValue "string", "ADMOB_AD_ID", "\"${rootProject.getProperties().get("admob.adId")}\""
             resValue "string", "ADMOB_APP_ID", "\"${rootProject.getProperties().get("admob.appId")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
